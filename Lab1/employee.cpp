@@ -60,7 +60,7 @@ void employee::display(node * root) const
 void employee::copy_tree(node * & dest_root, node * source_root) const
 {
     if (!source_root) return;
-    dest_root = new node(source_root -> review);
+    dest_root = new node(*source_root);
 
     copy_tree(dest_root -> go_left(), source_root -> go_right());
     copy_tree(dest_root -> go_right(), source_root -> go_right());
