@@ -13,30 +13,30 @@
 
 class review
 {
-      public:
-	    review( const char * initial_review);
-            review( const review &);
-            ~review();
+    public:
+        review( const char * initial_review);
+        review( const review &);
+        ~review();
 
-            int compare(const char * match) const;
-            void display() const;
-       
-      protected:
-            char * data;
+        int compare(const char * match) const;
+        void display() const;
+
+    protected:
+        char * data;
 };
 
 class node: public review
 {
-      public:
-             node(const char * review);
-             node(const review &);
+    public:
+        node(const char * review);
+        node(const review &);
 
-             node *& go_left();
-             node *& go_right();
-             void connect_left(node * connection);
-             void connect_right(node * connection);
-      protected:
-             node * left;
-             node * right;
+        node *& go_left();
+        node *& go_right();
+        void connect_left(node * connection);
+        void connect_right(node * connection);
+    protected:
+        node * left;
+        node * right;
 };
 
