@@ -21,9 +21,9 @@ class player {
 
         int changeEnergy(int energyCount, bool changeType); 
         int changeHealth(int healthAmount, bool changeType);
-        int addToHand(class card * adding);
-        int useCard(class card * toUse);
-        int displayHand() const;
+        void addToHand(class card * adding);
+        void useCard(class card * toUse, player & affecting);
+        void displayHand();
 
     private:
         char * name;
@@ -38,14 +38,13 @@ class node {
         node(card * data);
         node(const node &);
         ~node();
-
-        node *& getNext();
+        
         card * getData();
-        int setNext(node *& next); 
+        void setData(card * data);
+        node * next;
 
     private:
         class card * data;
-        node * next;
 };
 
 class deck {
@@ -54,14 +53,19 @@ class deck {
         deck(const deck &);
         ~deck();
 
+        void addCards(std::vector<class card*> cards);
         int drawCard(player & drawing);
         int shuffle();
-        int discard(const class card * data);
+        int discard(class card * data);
+        int copyDiscard();
         int reShuffleDiscard();
         
     private:
         node * head;
         node * discardHead;
+
+        int discard(card * data, node * discarding);
+        int copyDiscard(node * deckNode, node * discardNode);
 };
 
 #endif

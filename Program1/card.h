@@ -19,9 +19,10 @@ class card {
         card(const card &);
         ~card();
 
-        int display() const;
-        int removeEnergy(player & removing);
+        void display() const;
+        int removeEnergy(class player & removing);
         virtual int getType();
+        bool compare(const card * comparing);
         bool compare(const char * name);
 
     protected:
@@ -35,9 +36,9 @@ class attack : public card {
         attack();
         attack(char * name = (char*)(""), std::string description = "", int energy = 0, int power = 0);
         
-        int display() const;
+        void display() const;
         virtual int getType();
-        int attackPlayer(player & attacking);
+        int attackPlayer(class player & attacking);
 
     private:
         int power;
@@ -48,9 +49,9 @@ class spell : public card {
         spell();
         spell(char * name = (char*)(""), std::string description = "", int energy = 0, int energyRestored = 0);
 
-        int display() const;
+        void display() const;
         virtual int getType();
-        int restore(player & restoring);
+        int restore(class player & restoring);
 
     private:
         int energyRestored;
@@ -61,9 +62,9 @@ class defence : public card {
         defence();
         defence(char * name = (char*)(""), std::string description = "", int energy = 0, int healed = 0);
 
-        int display() const;
+        void display() const;
         virtual int getType();
-        int healing(player & healing);
+        int healing(class player & healing);
 
     private: 
         int healed;
