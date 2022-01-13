@@ -63,7 +63,12 @@ void player::useCard(card * toUse, player & affecting) {
 void player::displayHand() {
     vector<card*>::iterator v;
     for (v = hand.begin(); v != hand.end(); v++) {
-        (*v) -> display();
+        int type = (*v) -> getType();
+
+        if (type == 1) dynamic_cast<attack*> (*v) -> display();
+        else if (type == 2) dynamic_cast<spell*> (*v) -> display(); 
+        else if (type == 3) dynamic_cast<defence*> (*v) -> display(); 
+
     }
     return;
 }
