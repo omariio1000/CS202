@@ -50,8 +50,8 @@ bool card::compare(const card * comparing) {
 }
 
 bool card::compare(const char * comparing) {
-   if (strcmp(name, comparing) == 0) return true;
-   return false;
+    if (strcmp(name, comparing) == 0) return true;
+    return false;
 }
 
 //Attack

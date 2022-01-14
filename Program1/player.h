@@ -38,9 +38,10 @@ class node {
         node(card * data);
         node(const node &);
         ~node();
-        
-        card * getData();
+
+        void getData(card *& data);
         void setData(card * data);
+        void display();
         node * next;
 
     private:
@@ -53,19 +54,21 @@ class deck {
         deck(const deck &);
         ~deck();
 
-        void addCards(std::vector<class card*> cards);
+        void display();
+        void addCards(std::vector<class card*> & cards);
         int drawCard(player & drawing);
         int shuffle();
         int discard(class card * data);
         int copyDiscard();
         int reShuffleDiscard();
-        
+
     private:
         node * head;
         node * discardHead;
 
         int discard(card * data, node * discarding);
         int copyDiscard(node * deckNode, node * discardNode);
+        void display(node * head);
 };
 
 #endif

@@ -22,6 +22,11 @@ player::player(char * inName) {
     strcpy(name, inName);
 }
 
+player::player(const player & old) {
+    name = new char[strlen(old.name) + 1];
+    strcpy (name, old.name);
+}
+
 player::~player() {
     if (name) delete name;
 }
@@ -84,15 +89,26 @@ node::node(card * inData) {
 
 node::~node() {
     if (next) delete next;
-    data = nullptr;
 }
 
-card * node::getData() {
-    return data;
+void node::getData(card *& outData) {
+    outData = data;
+    return;
 }
 
 void node::setData(card * inData) {
     data = inData;
+}
+
+void node::display() {
+    int type = data -> getType();    
+
+    if (type == 1) dynamic_cast<attack*> (data) -> display();
+    else if (type == 2) dynamic_cast<spell*> (data) -> display(); 
+    else if (type == 3) dynamic_cast<defence*> (data) -> display(); 
+
+    return;
+
 }
 
 //Deck
@@ -106,14 +122,33 @@ deck::~deck() {
     if (discardHead) delete discardHead;
 }
 
-void deck::addCards(vector<card*> cards) {
-    node * temp = head;
+void deck::display() {
+    cout << endl << "This is the deck." << endl;
+    display(head);
+
+    cout << endl << "This is the discard pile." << endl;
+    display(discardHead);
+
+    return;
+
+}
+
+void deck::display(node * head) {
+    if (!head) return;
+    head -> display();
+    return display(head -> next);
+}
+
+void deck::addCards(vector<card*> & cards) {
     vector<card*>::iterator v;
     for (v = cards.begin(); v != cards.end(); v++) {
-       temp = new node((*v));
-       temp = temp -> next;
+        node * temp = head;
+        head = nullptr;
+        head = new node(*v);
+        head -> next = temp;
     }
-    shuffle();
+
+    return;
 }
 
 int deck::drawCard(player & drawing) {
@@ -123,7 +158,9 @@ int deck::drawCard(player & drawing) {
     head = head -> next;
     drawed -> next = nullptr;
 
-    drawing.addToHand(drawed -> getData());
+    card * myCard;
+    drawed -> getData(myCard);
+    drawing.addToHand(myCard);
 
     delete drawed;
 
@@ -132,35 +169,29 @@ int deck::drawCard(player & drawing) {
 
 int deck::shuffle() {
     if (!head) return 0;
-    node * count = head;
+
     int amount = 0;
+    vector<card*> toShuffle;
+
     while (head) {
+        card * myCard = nullptr;
+        head -> getData(myCard);
+        toShuffle.push_back(myCard);
+        node * temp = head -> next;
+        head -> next = nullptr;
+        head -> setData(nullptr);
+        delete head;
+        head = temp;
+        temp = nullptr;
         amount++;
-        head = head -> next;
-    }
-    count = head;
-
-    node ** cardList = new node*[amount];
-
-    for (int i = 0; i < amount; i++) {
-        cardList[i] -> setData(count -> getData());
-        count = count -> next;
     }
 
-    random_shuffle(&cardList[0], &cardList[amount]);
+    random_shuffle(toShuffle.begin(), toShuffle.end());
 
-    delete head;
-    count = head;
-
-    for (int i = 0; i < amount; i++) {
-        count = new node(cardList[i] -> getData());
-        delete cardList[i];
-        count = count -> next;
-    }
-
-    delete[] cardList;
-
+    addCards(toShuffle);
     return amount;
+
+
 }
 
 int deck::discard(card * data) {
@@ -192,7 +223,9 @@ int deck::copyDiscard(node * deckNode, node * discardNode) {
         return 1;
     }
 
-    deckNode = new node(discardNode -> getData());
+    card * myCard = nullptr;
+    discardNode -> getData(myCard);
+    deckNode = new node(myCard);
     return copyDiscard(deckNode -> next, discardNode -> next);
 }
 

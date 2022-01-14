@@ -35,7 +35,7 @@ class attack : public card {
     public:
         attack();
         attack(char * name = (char*)(""), std::string description = "", int energy = 0, int power = 0);
-        
+
         void display() const;
         virtual int getType();
         int attackPlayer(class player & attacking);
