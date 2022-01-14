@@ -24,6 +24,11 @@ card::card(char * inName, string inDesc, int inEnergy) {
     energyRequired = inEnergy;
 }
 
+card::card(const card & object) {
+    name = new char[strlen(object.name) + 1];
+    strcpy(name, object.name);
+}
+
 card::~card() {
     if (name) delete name;
 }
