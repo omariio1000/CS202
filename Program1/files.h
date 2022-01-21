@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * January 11, 2022
+ * File input class to parse and add cards
+ */
+
 #ifndef files_h
 #define files_h
 
@@ -13,9 +19,9 @@
 #include "card.h"
 #include "player.h"
 
-class files {
+class files {//File input class
     public:
-        files();
+        files(); //constructor
         int readFile(std::string fileName, std::vector<card*> & cards);
 };
 

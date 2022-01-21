@@ -91,8 +91,16 @@ node::~node() {
     if (next) delete next;
 }
 
-void node::getData(card *& outData) {
-    outData = data;
+card *& node::getData() {
+    return data;
+}
+
+node *& node::getNext() {
+    return next;
+}
+
+void node::setNext(node * inNext) {
+    next = inNext;
     return;
 }
 
@@ -136,7 +144,7 @@ void deck::display() {
 void deck::display(node * head) {
     if (!head) return;
     head -> display();
-    return display(head -> next);
+    return display(head -> getNext());
 }
 
 void deck::addCards(vector<card*> & cards) {
@@ -145,7 +153,7 @@ void deck::addCards(vector<card*> & cards) {
         node * temp = head;
         head = nullptr;
         head = new node(*v);
-        head -> next = temp;
+        head -> setNext(temp);
     }
 
     return;
@@ -154,12 +162,10 @@ void deck::addCards(vector<card*> & cards) {
 int deck::drawCard(player & drawing) {
     if (!head) return 0;
 
-    node * drawed = head;
-    head = head -> next;
-    drawed -> next = nullptr;
+    node * drawed = head -> getNext();
+    drawed -> setNext(nullptr);
 
-    card * myCard;
-    drawed -> getData(myCard);
+    card * myCard = drawed -> getData();
     drawing.addToHand(myCard);
 
     delete drawed;
@@ -174,11 +180,10 @@ int deck::shuffle() {
     vector<card*> toShuffle;
 
     while (head) {
-        card * myCard = nullptr;
-        head -> getData(myCard);
+        card * myCard = head -> getData();
         toShuffle.push_back(myCard);
-        node * temp = head -> next;
-        head -> next = nullptr;
+        node * temp = head -> getNext();
+        head -> setNext(nullptr);
         head -> setData(nullptr);
         delete head;
         head = temp;
@@ -204,14 +209,14 @@ int deck::discard(card * data, node * discarding) {
         discarding = new node(data);
         return 1;
     }
-    return discard(data, discarding -> next);
+    return discard(data, discarding -> getNext());
 }
 
 int deck::copyDiscard() {
     if (!discardHead) return 0;
 
     node * temp = head;
-    while (head) head = head -> next;
+    while (temp) temp = temp -> getNext();
 
     return copyDiscard(temp, discardHead);
 }
@@ -223,10 +228,9 @@ int deck::copyDiscard(node * deckNode, node * discardNode) {
         return 1;
     }
 
-    card * myCard = nullptr;
-    discardNode -> getData(myCard);
+    card * myCard = discardNode -> getData();
     deckNode = new node(myCard);
-    return copyDiscard(deckNode -> next, discardNode -> next);
+    return copyDiscard(deckNode -> getNext(), discardNode -> getNext());
 }
 
 int deck::reShuffleDiscard() {

@@ -1,3 +1,10 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * January 11, 2022
+ * Player class that stores information about player
+ * Also deck class that uses node class to store drawing and discard piles
+ */
+
 #ifndef player_h
 #define player_h
 
@@ -12,8 +19,9 @@
 
 #include "card.h"
 
-class player {
+class player {//Player class
     public:
+        //Constructors and destructors
         player();
         player(char * name = (char*)(""));
         player(const player &);
@@ -32,24 +40,29 @@ class player {
         std::vector<class card*> hand;
 };
 
-class node {
+class node {//Node class to store cards
     public:
+        //Constructors and destructor
         node();
         node(card * data);
         node(const node &);
         ~node();
 
-        void getData(card *& data);
+        card *& getData();
         void setData(card * data);
         void display();
-        node * next;
+
+        node *& getNext();
+        void setNext(node * next);
 
     private:
         class card * data;
+        node * next;
 };
 
-class deck {
+class deck {//Deck class to store drawing and discard pile
     public: 
+        //Constructors and destructor
         deck();
         deck(const deck &);
         ~deck();
@@ -66,6 +79,7 @@ class deck {
         node * head;
         node * discardHead;
 
+        //Recursive functions
         int discard(card * data, node * discarding);
         int copyDiscard(node * deckNode, node * discardNode);
         void display(node * head);
