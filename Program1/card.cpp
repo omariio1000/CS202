@@ -40,21 +40,25 @@ void card::display() const {
     return;
 }
 
-int card::removeEnergy(player & removing) {
+int card::removeEnergy(player & removing) const {
     removing.changeEnergy(energyRequired, false);
     return energyRequired;
 }
 
-int card::getType() {
-    return 0;
+int card::getEnergyRequired() const {
+    return energyRequired;
 }
 
-bool card::compare(const card * comparing) {
+/*int card::getType() {
+    return 0;
+}*/
+
+bool card::compare(const card * comparing) const {
     if (strcmp(name, comparing -> name) == 0) return true;
     return false;
 }
 
-bool card::compare(const char * comparing) {
+bool card::compare(const char * comparing) const {
     if (strcmp(name, comparing) == 0) return true;
     return false;
 }
@@ -70,11 +74,11 @@ void attack::display() const {
     return; 
 }
 
-int attack::getType() {
+/*int attack::getType() {
     return 1;
-}
+}*/
 
-int attack::attackPlayer(player & attacking) {
+int attack::attackPlayer(player & attacking) const {
     attacking.changeHealth(power, false);
     return power;
 }
@@ -90,11 +94,11 @@ void spell::display() const {
     return;
 }
 
-int spell::getType() {
+/*int spell::getType() {
     return 2;
-}
+}*/
 
-int spell::restore(player & restoring) {
+int spell::restore(player & restoring) const {
     restoring.changeEnergy(energyRestored, true);
     return energyRestored;
 }
@@ -109,11 +113,11 @@ void defence::display() const {
     cout << "This card will heal " << healed << " health." << endl;
 }
 
-int defence::getType() {
+/*int defence::getType() {
     return 3;
-}
+}*/
 
-int defence::healing(player & healing) {
+int defence::healing(player & healing) const {
     healing.changeHealth(healed, true);
     return healed;
 }

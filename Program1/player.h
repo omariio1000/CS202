@@ -30,8 +30,11 @@ class player {//Player class
         int changeEnergy(int energyCount, bool changeType); 
         int changeHealth(int healthAmount, bool changeType);
         void addToHand(class card * adding);
-        void useCard(class card * toUse, player & affecting);
+        int useCard(class card * toUse, player & affecting, class deck & myDeck);
+        void display();
         void displayHand();
+        void displayName() const;
+        bool checkHealth() const;
 
     private:
         char * name;
@@ -50,7 +53,7 @@ class node {//Node class to store cards
 
         card *& getData();
         void setData(card * data);
-        void display();
+        void display() const;
 
         node *& getNext();
         void setNext(node * next);
@@ -69,20 +72,23 @@ class deck {//Deck class to store drawing and discard pile
 
         void display();
         void addCards(std::vector<class card*> & cards);
+        void addCards(card * adding);
         int drawCard(player & drawing);
         int shuffle();
-        int discard(class card * data);
-        int copyDiscard();
+        int discard(card * data);
+        void copyDiscard();
         int reShuffleDiscard();
 
     private:
         node * head;
-        node * discardHead;
+        //node * discardHead;
+        std::vector<class card*> discardPile;
 
         //Recursive functions
-        int discard(card * data, node * discarding);
-        int copyDiscard(node * deckNode, node * discardNode);
-        void display(node * head);
+        //int discard(card * data, node * discarding);
+        //int copyDiscard(node * deckNode, node * discardNode);
+        void display(node * head) const;
+        void display(std::vector<class card*> & cards);
 };
 
 #endif

@@ -13,6 +13,8 @@
 
 using namespace std;
 
+void switchPlayer(int & current, int & other);
+
 int main() {
     string input;
     files fileReader;
@@ -43,13 +45,7 @@ int main() {
     cin.clear();
     cin.ignore(100, '\n');
     if (yesno == 'y') {
-        for (v = myCards.begin(); v != myCards.end(); v++) {
-            int type = (*v) -> getType();
-
-            if (type == 1) dynamic_cast<attack*> (*v) -> display();
-            else if (type == 2) dynamic_cast<spell*> (*v) -> display();
-            else if (type == 3) dynamic_cast<defence*> (*v) -> display();
-        }
+        for (v = myCards.begin(); v != myCards.end(); v++) (*v) -> display(); 
         cout << endl;
     }
     myDeck.shuffle();
@@ -74,12 +70,115 @@ int main() {
 
     player players[2] = {player1, player2};
 
+    //players[0].display();
+    //players[1].display();
+
     bool playing = true;
     int currentPlayer = 0;
+    int otherPlayer = 1;
     while (playing) {
-        break; 
+        cout << endl << "Current Player: ";
+        players[currentPlayer].display();
+        cout << endl << "What would you like to do?" << endl;
+        cout << "1: Draw a Card" << endl;
+        cout << "2: Use a Card" << endl;
+        cout << "3: Hibernate (Regenerate 1 Energy)" << endl;
+        cout << "4: Display Information Again (Doesn't End Turn)" << endl;
+        cout << "5: Skip Turn" << endl;
+        cout << "6: Vote to End Game" << endl;
+        int answer = 0;
+
+        cin >> answer;
+        cin.clear();
+        cin.ignore(100, '\n');
+
+        if (answer == 1) {//draw a card
+            int err = myDeck.drawCard(players[currentPlayer]);
+            if (err >= -1) {
+                if (err == 0)
+                    cout << endl << "Since the discard pile is empty, you must select another action." << endl;
+                else {
+                    cout << endl << "Drawing pile is empty! Would you like to reshuffle the discard pile? (y/n)" << endl;
+                    cout << "By the way, if you don't, the game will end! " << endl;
+                    cin >> yesno;
+                    cin.clear();
+                    cin.ignore('\n', 100);
+
+                    if (yesno == 'y') {
+                        err = myDeck.reShuffleDiscard();
+                        if (err == 0)
+                            cout << endl << "Actually, the discard pile is empty too. Select another action." << endl;
+
+                        myDeck.drawCard(players[currentPlayer]);
+                        switchPlayer(currentPlayer, otherPlayer);
+                    }
+                    else {
+                        if (yesno == 'n') break;
+                        else cout << endl << "Invalid Input" << endl;
+                    }
+                }
+            }
+            else switchPlayer(currentPlayer, otherPlayer);
+        }
+
+        else if (answer == 2) {//use a card
+        }
+
+        else if (answer == 3) {//hibernate
+            players[currentPlayer].changeEnergy(1, true);
+            switchPlayer(currentPlayer, otherPlayer);
+        }
+
+        else if (answer == 4) cout << "Too lazy to scroll up?" << endl; //display again
+
+
+        else if (answer == 5) {//skip turn
+            cout << endl << "Are you sure? You can hibernate and get 1 energy instead... (y/n)";
+            cin >> yesno;
+            cin.clear();
+            cin.ignore('\n', 100);
+
+            if (yesno == 'y' ) {
+                cout << endl << "ok then..." << endl;
+                switchPlayer(currentPlayer, otherPlayer);
+            }
+            else cout << "Good Choice." << endl;
+        }
+
+        else if (answer == 6) {//vote end
+            cout << endl << "Are you sure you would like to end the game? (y/n) ";
+            cin >> yesno;
+            cin.clear();
+            cin.ignore('\n', 100);
+
+            if (yesno == 'y') {
+                cout << endl; 
+                players[otherPlayer].displayName();
+                cout << ", would you like to end the game as well? (y/n) ";
+                cin >> yesno;
+                cin.clear();
+                cin.ignore('\n', 100);
+
+                if (yesno == 'y') break;
+                else {
+                    cout << endl << "Good Choice. ";
+                    players[currentPlayer].displayName();
+                    cout << " must be desperate." << endl;
+                }
+            }
+
+            else cout << endl << "Good Choice." << endl;
+        }
+
+        else cout << endl << "Invalid Input." << endl;
     }
 
 
     return 0;
+}
+
+void switchPlayer(int & current, int & other) {
+    int temp = current;
+    current = other;
+    other = temp;
 }

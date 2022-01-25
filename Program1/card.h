@@ -24,13 +24,14 @@ class card {//card base class
         card();
         card(char * name = (char*)(""), std::string description = "", int energy = 0);
         card(const card &);
-        ~card();
+        virtual ~card();
 
-        void display() const;
-        int removeEnergy(class player & removing);
-        virtual int getType(); //Virtual function to get card type
-        bool compare(const card * comparing);
-        bool compare(const char * name);
+        virtual void display() const;
+        int removeEnergy(class player & removing) const;
+        int getEnergyRequired() const;
+        //virtual int getType(); //Virtual function to get card type
+        bool compare(const card * comparing) const;
+        bool compare(const char * name) const;
 
     protected:
         //Basic card data
@@ -46,8 +47,8 @@ class attack : public card {
         attack(char * name = (char*)(""), std::string description = "", int energy = 0, int power = 0);
 
         void display() const;
-        int getType();
-        int attackPlayer(class player & attacking);
+        //int getType();
+        int attackPlayer(class player & attacking) const;
 
     private:
         int power;
@@ -60,8 +61,8 @@ class spell : public card {
         spell(char * name = (char*)(""), std::string description = "", int energy = 0, int energyRestored = 0);
 
         void display() const;
-        int getType();
-        int restore(class player & restoring);
+        //int getType();
+        int restore(class player & restoring) const;
 
     private:
         int energyRestored;
@@ -74,8 +75,8 @@ class defence : public card {
         defence(char * name = (char*)(""), std::string description = "", int energy = 0, int healed = 0);
 
         void display() const;
-        int getType();
-        int healing(class player & healing);
+        //int getType();
+        int healing(class player & healing) const;
 
     private: 
         int healed;
