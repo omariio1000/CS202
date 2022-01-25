@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <random>
 
 #include "player.h"
 
@@ -48,17 +49,30 @@ void player::addToHand(card * adding) {
     return;
 }
 
-int player::useCard(card * toUse, player & affecting, deck & myDeck) {
+int player::useCard(char * cardName, player & affecting, deck & myDeck) {
+    if (!cardName) return -2;
     /*int type = toUse -> getType();
 
       if (type == 1) dynamic_cast<attack*> (toUse) -> attackPlayer(affecting);
       else if (type == 2) dynamic_cast<spell*> (toUse) -> restore(affecting);
       else if (type == 3) dynamic_cast<defence*> (toUse) -> healing(affecting);
       */
-    if (energy < toUse -> getEnergyRequired()) {
-        cout << endl << "You don't have enough energy to play this card!" << endl;
-        return 0;
+    bool foundCard = false;
+
+    card * toUse = nullptr;
+    vector<card*>::iterator v;
+    for (v = hand.begin(); v != hand.end(); v++) {
+        if ((*v) -> compare(cardName)) {
+            foundCard = true;        
+            toUse = (*v);
+            myDeck.discard(*v);
+            hand.erase(v);
+            break;
+        }
     }
+
+    if (!foundCard) return -3;
+    if (energy < toUse -> getEnergyRequired()) return 0;
 
     attack * ptr = dynamic_cast<attack*> (toUse);
     if (ptr) ptr -> attackPlayer(affecting);
@@ -72,13 +86,6 @@ int player::useCard(card * toUse, player & affecting, deck & myDeck) {
         }
     }
 
-    vector<card*>::iterator v;
-    for (v = hand.begin(); v != hand.end(); v++) {
-        if (toUse -> compare(*v)) {
-            myDeck.discard(*v);
-            hand.erase(v);
-        }
-    }
 
     return 1;
 }
@@ -94,6 +101,10 @@ void player::display() {
 }
 
 void player::displayHand() {
+    if (hand.size() == 0) {
+        cout << endl << "Empty Hand!" << endl;
+        return;
+    }
     vector<card*>::iterator v;
     for (v = hand.begin(); v != hand.end(); v++) (*v) -> display();
     /*{
@@ -189,8 +200,8 @@ void deck::display() {
 
 }
 
-void deck::display(node * current) const {
-    if (!current || current != head) return;
+void deck::display(node * current){
+    if (!current || current == head) return;
     current -> display();
     return display(current -> getNext());
 }
@@ -205,11 +216,11 @@ void deck::addCards(vector<card*> & cards) {
     vector<card*>::iterator v;
     for (v = cards.begin(); v != cards.end(); v++) addCards(*v);
     /*{
-        node * temp = head;
-        head = nullptr;
-        head = new node(*v);
-        head -> setNext(temp);
-    }*/
+      node * temp = head;
+      head = nullptr;
+      head = new node(*v);
+      head -> setNext(temp);
+      }*/
 
     return;
 }
@@ -268,7 +279,7 @@ int deck::shuffle() {
         temp = nullptr;
         amount++;
     }
-
+    srand(unsigned(time(NULL)));
     random_shuffle(toShuffle.begin(), toShuffle.end());
 
     addCards(toShuffle);
@@ -278,17 +289,17 @@ int deck::shuffle() {
 }
 
 /*int deck::discard(card * data) {
-    if (!data) return 0;
-    return discard(data, discardHead);
-}
+  if (!data) return 0;
+  return discard(data, discardHead);
+  }
 
-int deck::discard(card * data, node * discarding) {
-    if (!discarding) {
-        discarding = new node(data);
-        return 1;
-    }
-    return discard(data, discarding -> getNext());
-}*/
+  int deck::discard(card * data, node * discarding) {
+  if (!discarding) {
+  discarding = new node(data);
+  return 1;
+  }
+  return discard(data, discarding -> getNext());
+  }*/
 
 int deck::discard(card * data) {
     if (!data) return 0;
@@ -297,25 +308,25 @@ int deck::discard(card * data) {
 }
 
 /*int deck::copyDiscard() {
-    if (!discardHead) return 0;
+  if (!discardHead) return 0;
 
-    node * temp = head;
-    while (temp) temp = temp -> getNext();
+  node * temp = head;
+  while (temp) temp = temp -> getNext();
 
-    return copyDiscard(temp, discardHead);
-}
+  return copyDiscard(temp, discardHead);
+  }
 
-int deck::copyDiscard(node * deckNode, node * discardNode) {
-    if (!discardNode) {
-        delete discardHead;
-        discardHead = nullptr;
-        return 1;
-    }
+  int deck::copyDiscard(node * deckNode, node * discardNode) {
+  if (!discardNode) {
+  delete discardHead;
+  discardHead = nullptr;
+  return 1;
+  }
 
-    card * myCard = discardNode -> getData();
-    deckNode = new node(myCard);
-    return copyDiscard(deckNode -> getNext(), discardNode -> getNext());
-}*/
+  card * myCard = discardNode -> getData();
+  deckNode = new node(myCard);
+  return copyDiscard(deckNode -> getNext(), discardNode -> getNext());
+  }*/
 
 void deck::copyDiscard() {
     addCards(discardPile);

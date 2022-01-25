@@ -30,8 +30,8 @@ class card {//card base class
         int removeEnergy(class player & removing) const;
         int getEnergyRequired() const;
         //virtual int getType(); //Virtual function to get card type
-        bool compare(const card * comparing) const;
-        bool compare(const char * name) const;
+        bool compare(const card * comparing);
+        bool compare(const char * name);
 
     protected:
         //Basic card data

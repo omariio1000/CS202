@@ -16,6 +16,8 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <random>
 
 #include "card.h"
 
@@ -30,7 +32,7 @@ class player {//Player class
         int changeEnergy(int energyCount, bool changeType); 
         int changeHealth(int healthAmount, bool changeType);
         void addToHand(class card * adding);
-        int useCard(class card * toUse, player & affecting, class deck & myDeck);
+        int useCard(char * cardName, player & affecting, class deck & myDeck);
         void display();
         void displayHand();
         void displayName() const;
@@ -83,11 +85,10 @@ class deck {//Deck class to store drawing and discard pile
         node * head;
         //node * discardHead;
         std::vector<class card*> discardPile;
-
         //Recursive functions
         //int discard(card * data, node * discarding);
         //int copyDiscard(node * deckNode, node * discardNode);
-        void display(node * head) const;
+        void display(node * head);
         void display(std::vector<class card*> & cards);
 };
 

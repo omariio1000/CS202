@@ -53,12 +53,12 @@ int card::getEnergyRequired() const {
     return 0;
 }*/
 
-bool card::compare(const card * comparing) const {
+bool card::compare(const card * comparing) {
     if (strcmp(name, comparing -> name) == 0) return true;
     return false;
 }
 
-bool card::compare(const char * comparing) const {
+bool card::compare(const char * comparing) {
     if (strcmp(name, comparing) == 0) return true;
     return false;
 }
