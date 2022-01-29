@@ -32,11 +32,13 @@ class player {//Player class
         int changeEnergy(int energyCount, bool changeType); 
         int changeHealth(int healthAmount, bool changeType);
         void addToHand(class card * adding);
-        int useCard(char * cardName, player & affecting, class deck & myDeck);
+        int useCard(char * cardName, player & affecting, class deck & myDeck, int forHistory);
         void display();
         void displayHand();
         void displayName() const;
         bool checkHealth() const;
+        int findWinner(const player & other) const;
+        char* getName() const;
 
     private:
         char * name;
@@ -45,7 +47,7 @@ class player {//Player class
         std::vector<class card*> hand;
 };
 
-class node {//Node class to store cards
+class node {//Node class to store cards, used as CLL for deck and LLL for history
     public:
         //Constructors and destructor
         node();
@@ -77,19 +79,25 @@ class deck {//Deck class to store drawing and discard pile
         void addCards(card * adding);
         int drawCard(player & drawing);
         int shuffle();
-        int discard(card * data);
+        int discard(card * data, int forHistory);
         void copyDiscard();
         int reShuffleDiscard();
+        void addToHistory(card * data, int forHistory);
+        void displayHistory(char * player1, char * player2);
 
     private:
-        node * head;
+        node * rear; 
+        node ** playerHistory;
         //node * discardHead;
         std::vector<class card*> discardPile;
+
         //Recursive functions
         //int discard(card * data, node * discarding);
         //int copyDiscard(node * deckNode, node * discardNode);
         void display(node * head);
         void display(std::vector<class card*> & cards);
+        void addToHistory(card * data, node *& current);
+        void displayHistory(node * current);
 };
 
 #endif

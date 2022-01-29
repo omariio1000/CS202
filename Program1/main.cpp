@@ -12,6 +12,7 @@
 #include "files.h"
 
 using namespace std;
+using namespace colors;
 
 void switchPlayer(int & current, int & other);
 
@@ -21,9 +22,10 @@ int main() {
     vector<card*> myCards;
     vector<card*>::iterator v;
 
-    //cout << endl << "What is the name of your file?" << endl;
+    //cout << endl << "What is the name of your file?" << endl << GREEN << ">> " << RESET;
     //getline(cin, input);
     //cin.clear();
+    //cin.ignore(100, '\n');
     //int cards = fileReader.readFile(input, myCards);
 
     int cards= fileReader.readFile("deck1.txt", myCards);
@@ -39,7 +41,7 @@ int main() {
         return 0;
     }
 
-    cout << endl << "Would you like to view the deck? (y/n) ";
+    cout << endl << "Would you like to view the deck? (y/n)" << endl << GREEN << ">> " << RESET;
     char yesno;
     cin >> yesno;
     cin.clear();
@@ -53,20 +55,20 @@ int main() {
 
     char * player1Name = new char[100];
     char * player2Name = new char[100];
-    cout << endl << "What is the first player's name? ";
+    cout << endl << "What is the first player's name?" << endl << GREEN << ">> " << RESET;
     cin.get(player1Name, 100);
     cin.clear();
     cin.ignore(100, '\n');
     player player1(player1Name);
-    delete player1Name;
+    delete[] player1Name;
     player1Name = nullptr;
 
-    cout << endl << "What is the second player's name? ";
+    cout << endl << "What is the second player's name?" << endl << GREEN << ">> " << RESET;
     cin.get(player2Name, 100);
     cin.clear();
     cin.ignore(100, '\n');
     player player2(player2Name);
-    delete player2Name;
+    delete[] player2Name;
     player2Name = nullptr;
 
     player players[2] = {player1, player2};
@@ -77,7 +79,8 @@ int main() {
     bool playing = true;
     int currentPlayer = 0;
     int otherPlayer = 1;
-    while (playing) {
+    while (playing && players[0].checkHealth() && players[1].checkHealth()) {
+        cout << endl << YELLOW << "-----------------------------" << RESET << endl;
         cout << endl << "Current Player: ";
         players[currentPlayer].display();
         cout << endl << "What would you like to do?" << endl;
@@ -87,6 +90,7 @@ int main() {
         cout << "4: Display Information Again (Doesn't End Turn)" << endl;
         cout << "5: Skip Turn" << endl;
         cout << "6: Vote to End Game" << endl;
+        cout << GREEN << ">> " << RESET;
         int answer = 0;
 
         cin >> answer;
@@ -95,46 +99,48 @@ int main() {
 
         if (answer == 1) {//draw a card
             int err = myDeck.drawCard(players[currentPlayer]);
-            if (err >= -1) {
-                if (err == 0)
-                    cout << endl << "Since the discard pile is empty, you must select another action." << endl;
-                else {
-                    cout << endl << "Drawing pile is empty! Would you like to reshuffle the discard pile? (y/n)" << endl;
-                    cout << "By the way, if you don't, the game will end! " << endl;
-                    cin >> yesno;
-                    cin.clear();
-                    cin.ignore(100, '\n');
+            if (err == 0) {
+                cout << endl << "Drawing pile is empty! Would you like to reshuffle the discard pile? (y/n)" << endl;
+                cout << "By the way, if you don't, the game will end! " << endl;
+                cout << GREEN << ">> " << RESET;
+                cin >> yesno;
+                cin.clear();
+                cin.ignore(100, '\n');
 
-                    if (yesno == 'y') {
-                        err = myDeck.reShuffleDiscard();
-                        if (err == 0)
-                            cout << endl << "Actually, the discard pile is empty too. Select another action." << endl;
+                if (yesno == 'y') {
+                    err = myDeck.reShuffleDiscard();
+                    if (err == 0) 
+                        cout << endl << "Actually, the discard pile is empty too. Select another action." << endl;
 
+
+                    else {
                         myDeck.drawCard(players[currentPlayer]);
                         switchPlayer(currentPlayer, otherPlayer);
                     }
-                    else {
-                        if (yesno == 'n') playing = false;
-                        else cout << endl << "Invalid Input" << endl;
-                    }
+                }
+                else {
+                    if (yesno == 'n') playing = false;
+                    else cout << endl << "Invalid Input" << endl;
                 }
             }
+
             else switchPlayer(currentPlayer, otherPlayer);
         }
 
         else if (answer == 2) {//use a card
             cout << endl << "What card would you like to play?" << endl;
+            cout << GREEN << ">> " << RESET;
             char * cardName = new char[100];
             cin.get(cardName, 100);
             cin.clear();
             cin.ignore(100, '\n');
 
             cout << endl << "Which player would you like to affect? (Please don't heal your opponent)" << endl;
-            cout << "1: ";
+            cout << CYAN << "1: ";
             players[currentPlayer].displayName();
-            cout << endl << "2: ";
+            cout << RESET << endl << "2: ";
             players[otherPlayer].displayName();
-            cout << endl;
+            cout << endl << GREEN <<">> " << RESET;
 
             cin >> answer;
             cin.clear();
@@ -142,8 +148,8 @@ int main() {
 
             int err = 999;
 
-            if (answer == 1) err = players[currentPlayer].useCard(cardName, players[currentPlayer], myDeck);
-            else if (answer == 2) err = players[currentPlayer].useCard(cardName, players[otherPlayer], myDeck);
+            if (answer == 1) err = players[currentPlayer].useCard(cardName, players[currentPlayer], myDeck, currentPlayer);
+            else if (answer == 2) err = players[currentPlayer].useCard(cardName, players[otherPlayer], myDeck, currentPlayer);
             else cout << endl << "Invalid Input!" << endl;
 
             //cout << endl << "error code: " << err << endl;
@@ -154,6 +160,7 @@ int main() {
                 else if (err == 0) cout << endl << "You don't have enough energy to use this card!" << endl;
                 else switchPlayer(currentPlayer, otherPlayer);
             }
+            delete[] cardName;
         }
 
 
@@ -167,12 +174,13 @@ int main() {
 
         else if (answer == 5) {//skip turn
             cout << endl << "Are you sure? You can hibernate and get 1 energy instead... (y/n) ";
+            cout << endl << GREEN << ">> " << RESET;
             cin >> yesno;
             cin.clear();
             cin.ignore(100, '\n');
 
             if (yesno == 'y' ) {
-                cout << endl << "ok then..." << endl;
+                cout << endl << YELLOW << "ok then..." << RESET << endl;
                 switchPlayer(currentPlayer, otherPlayer);
             }
             else cout << "Good Choice." << endl;
@@ -180,6 +188,7 @@ int main() {
 
         else if (answer == 6) {//vote end
             cout << endl << "Are you sure you would like to end the game? (y/n) ";
+            cout << endl << GREEN << ">> " << RESET;
             cin >> yesno;
             cin.clear();
             cin.ignore(100, '\n');
@@ -188,6 +197,7 @@ int main() {
                 cout << endl; 
                 players[otherPlayer].displayName();
                 cout << ", would you like to end the game as well? (y/n) ";
+                cout << endl << GREEN << ">> " << RESET;
                 cin >> yesno;
                 cin.clear();
                 cin.ignore(100, '\n');
@@ -203,9 +213,32 @@ int main() {
             else cout << endl << "Good Choice." << endl;
         }
 
-        else cout << endl << "Invalid Input." << endl;
-    }
+        else if (answer == -999) playing = false;
 
+        else cout << endl << RED << "Invalid Input." << RESET << endl;
+    }
+    
+    int winner = players[0].findWinner(players[1]);
+    if (winner > 0) {
+        cout << endl << "Congratulations, ";
+        players[winner % 2].displayName();
+        cout << "!. You Won!" << endl;
+        if (winner > 3) cout << "You tied in health, but you had more energy." << endl;
+
+    }
+    else cout << endl << "There was no winner! You tied in both health and energy!" << endl;
+
+    cout << endl << "Would you like to view the game history? (y/n)" << endl;
+    cout << GREEN << ">> " << RESET;
+    cin >> yesno;
+    cin.clear();
+    cin.ignore(100, '\n');
+
+    if (yesno == 'y') myDeck.displayHistory(players[0].getName(), players[1].getName());
+
+    cout << endl << "Thanks for playing!" << endl;
+
+    for (v = myCards.begin(); v != myCards.end(); v++) if (*v) delete (*v);
 
     return 0;
 }

@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * January 11, 2022
+ * Implementation for card base and derived classes
+ */
+
 #include <cstring>
 #include <cctype>
 #include <iostream>
@@ -8,10 +14,13 @@
 #include <string>
 
 #include "card.h"
+#include "files.h"
 
 using namespace std;
+using namespace colors;
 
 //Card
+
 card::card() {
     name = nullptr;
 }
@@ -24,28 +33,34 @@ card::card(char * inName, string inDesc, int inEnergy) {
     energyRequired = inEnergy;
 }
 
-card::card(const card & object) {
+card::card(const card & object) {//copy constructor
     name = new char[strlen(object.name) + 1];
     strcpy(name, object.name);
 }
 
 card::~card() {
-    if (name) delete name;
+    if (name) delete[] name;
+    name = nullptr;
 }
 
-void card::display() const {
+void card::display() const {//display all info, virtual so I don't need dynamic cast
     cout << endl << name << endl;
     cout << description << endl;
     cout << "Energy Required: " << energyRequired << endl;
     return;
 }
 
-int card::removeEnergy(player & removing) const {
+void card::displayName() const {//display just name for client
+    cout << name;
+    return;
+}
+
+int card::removeEnergy(player & removing) const {//removing required energy from player
     removing.changeEnergy(energyRequired, false);
     return energyRequired;
 }
 
-int card::getEnergyRequired() const {
+int card::getEnergyRequired() const {//getting how much energy is needed for cient
     return energyRequired;
 }
 
@@ -53,12 +68,12 @@ int card::getEnergyRequired() const {
     return 0;
 }*/
 
-bool card::compare(const card * comparing) {
+bool card::compare(const card * comparing) {//comparing two cards to see if same
     if (strcmp(name, comparing -> name) == 0) return true;
     return false;
 }
 
-bool card::compare(const char * comparing) {
+bool card::compare(const char * comparing) {//comparing names to see if same
     if (strcmp(name, comparing) == 0) return true;
     return false;
 }
@@ -66,11 +81,20 @@ bool card::compare(const char * comparing) {
 //Attack
 attack::attack(char * name, string description, int energy, int inPower) : card(name, description, energy) {
     power = inPower;
+    //only here because can't think of a use for it
+    required = new char[strlen("Required ot have a char array in at least one derived class lol") + 1];
+    strcpy(required, "Required to have a char array in at least one derived class lol");
 }
 
-void attack::display() const {
+attack::~attack() {
+    if (required) delete[] required;
+    required = nullptr;
+}
+
+void attack::display() const {//virtual display all function
+    cout << RED;
     card::display();
-    cout << "This card has " << power << " attack power." << endl;
+    cout << "This card has " << power << " attack power." << endl << RESET;
     return; 
 }
 
@@ -78,7 +102,7 @@ void attack::display() const {
     return 1;
 }*/
 
-int attack::attackPlayer(player & attacking) const {
+int attack::attackPlayer(player & attacking) const {//attacking player (removing their health)
     attacking.changeHealth(power, false);
     return power;
 }
@@ -88,9 +112,10 @@ spell::spell(char * name, string description, int energy, int inEnergyRestored) 
     energyRestored = inEnergyRestored;
 }
 
-void spell::display() const {
+void spell::display() const {//virtual display all function
+    cout << MAGENTA;
     card::display();
-    cout << "This card will restore " << energyRestored << " energy." << endl;
+    cout << "This card will restore " << energyRestored << " energy." << endl << RESET;
     return;
 }
 
@@ -98,7 +123,7 @@ void spell::display() const {
     return 2;
 }*/
 
-int spell::restore(player & restoring) const {
+int spell::restore(player & restoring) const {//restoring player's energy
     restoring.changeEnergy(energyRestored, true);
     return energyRestored;
 }
@@ -108,16 +133,17 @@ defence::defence(char * name, string description, int energy, int inHealed) : ca
     healed = inHealed;
 }
 
-void defence::display() const {
+void defence::display() const {//virtual display all function
+    cout << BLUE;
     card::display();
-    cout << "This card will heal " << healed << " health." << endl;
+    cout << "This card will heal " << healed << " health." << endl << RESET;
 }
 
 /*int defence::getType() {
     return 3;
 }*/
 
-int defence::healing(player & healing) const {
+int defence::healing(player & healing) const {//healing player
     healing.changeHealth(healed, true);
     return healed;
 }

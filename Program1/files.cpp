@@ -53,21 +53,27 @@ int files::readFile(string fileName, vector<card*> & cards) {
             int repititions = atoi(allInfo[5]);
 
             if (strcmp(allInfo[0], (char*)("attack")) == 0) {
-                attack * newCard = new attack(allInfo[1], description, energy, powerHealRestore);
-                for (int i = 0; i < repititions; i++) cards.push_back(newCard);
-                newCard = nullptr;
+                for (int i = 0; i < repititions; i++) {
+                    attack * newCard = new attack(allInfo[1], description, energy, powerHealRestore);
+                    cards.push_back(newCard);
+                    newCard = nullptr;
+                }
             }
 
             else if (strcmp(allInfo[0], (char*)("spell")) == 0) {
-                spell * newCard = new spell(allInfo[1], description, energy, powerHealRestore);
-                for (int i = 0; i < repititions; i++) cards.push_back(newCard);
-                newCard = nullptr;
+                for (int i = 0; i < repititions; i++) { 
+                    spell * newCard = new spell(allInfo[1], description, energy, powerHealRestore);
+                    cards.push_back(newCard);
+                    newCard = nullptr;
+                }
             }
 
             else if (strcmp(allInfo[0], (char*)("defence")) == 0) {
-                defence * newCard = new defence(allInfo[1], description, energy, powerHealRestore);
-                for (int i = 0; i < repititions; i++) cards.push_back(newCard);
-                newCard = nullptr;
+                for (int i = 0; i < repititions; i++) {
+                    defence * newCard = new defence(allInfo[1], description, energy, powerHealRestore);
+                    cards.push_back(newCard);
+                    newCard = nullptr;
+                }
             }
 
             for (int i = 0; i < 7; i++) {

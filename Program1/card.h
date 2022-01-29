@@ -27,6 +27,7 @@ class card {//card base class
         virtual ~card();
 
         virtual void display() const;
+        void displayName() const;
         int removeEnergy(class player & removing) const;
         int getEnergyRequired() const;
         //virtual int getType(); //Virtual function to get card type
@@ -45,6 +46,7 @@ class attack : public card {
         //Additional Constructors
         attack();
         attack(char * name = (char*)(""), std::string description = "", int energy = 0, int power = 0);
+        ~attack();
 
         void display() const;
         //int getType();
@@ -52,6 +54,7 @@ class attack : public card {
 
     private:
         int power;
+        char * required; //not sure where to implement it but it's here
 };
 
 class spell : public card {

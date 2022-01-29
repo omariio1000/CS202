@@ -22,8 +22,9 @@ class list
 
 	/* *****************YOUR TURN! ********************* */
 	//Write your function prototype here:
-
+    int copySpecial(list & destination);
 
   private:
 	node * rear;
+    int copySpecial(node *& dest, node * source);
 };
