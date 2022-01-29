@@ -29,9 +29,10 @@ int main() {
     vector<card*>::iterator v;
 
     cout << endl << "What is the name of your file?" << endl << GREEN << ">> " << RESET;
-    getline(cin, input);
+    //getline(cin, input);
+    cin >> input;
     cin.clear();
-    cin.ignore(100, '\n');
+    cin.ignore(1000, '\n');
     int cards = fileReader.readFile(input, myCards);
 
     //int cards = fileReader.readFile("deck1.txt", myCards);
@@ -83,7 +84,8 @@ int main() {
 
     //players[0].display();
     //players[1].display();
-
+    
+    bool forceQuit = false;
     bool playing = true;
     int currentPlayer = 0;
     int otherPlayer = 1;
@@ -221,31 +223,37 @@ int main() {
             else cout << endl << "Good Choice." << endl;
         }
 
-        else if (answer == -999) playing = false;
+        else if (answer == -999) {//used to test for mem leaks without running entire program
+            playing = false;
+            forceQuit = true;
+            cout << endl << "Look like someone read the source code..." << endl;
+            cout << endl << "I'm not even going to tell you who won." << endl;
+        }
 
         else cout << endl << RED << "Invalid Input." << RESET << endl;
     }
-    
-    int winner = players[0].findWinner(players[1]);
-    if (winner > 0) {
-        cout << endl << "Congratulations, ";
-        players[winner % 2].displayName();
-        cout << "!. You Won!" << endl;
-        if (winner > 3) cout << "You tied in health, but you had more energy." << endl;
 
+    if (!forceQuit) {
+        int winner = players[0].findWinner(players[1]);
+        if (winner > 0) {
+            cout << endl << "Congratulations, ";
+            players[winner % 2].displayName();
+            cout << "!. You Won!" << endl;
+            if (winner > 3) cout << "You tied in health, but you had more energy." << endl;
+
+        }
+        else cout << endl << "There was no winner! You tied in both health and energy!" << endl;
+
+        cout << endl << "Would you like to view the game history? (y/n)" << endl;
+        cout << GREEN << ">> " << RESET;
+        cin >> yesno;
+        cin.clear();
+        cin.ignore(100, '\n');
+
+        if (yesno == 'y') myDeck.displayHistory(players[0].getName(), players[1].getName());
+
+        cout << endl << "Thanks for playing!" << endl;
     }
-    else cout << endl << "There was no winner! You tied in both health and energy!" << endl;
-
-    cout << endl << "Would you like to view the game history? (y/n)" << endl;
-    cout << GREEN << ">> " << RESET;
-    cin >> yesno;
-    cin.clear();
-    cin.ignore(100, '\n');
-
-    if (yesno == 'y') myDeck.displayHistory(players[0].getName(), players[1].getName());
-
-    cout << endl << "Thanks for playing!" << endl;
-
     //calling destructors for all cards
     for (v = myCards.begin(); v != myCards.end(); v++) if (*v) delete (*v);
 

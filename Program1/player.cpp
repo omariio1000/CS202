@@ -99,6 +99,8 @@ int player::useCard(char * cardName, player & affecting, deck & myDeck, int forH
         }
     }
 
+    energy -= toUse -> getEnergyRequired();
+
 
     return 1;
 }

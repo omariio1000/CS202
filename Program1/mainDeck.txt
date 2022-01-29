@@ -1,0 +1,18 @@
+attack|Fireball|Brisingr!|2|4|2
+attack|Arrows|Rain arrows down on your opponnent|1|2|3
+attack|Sword|Good old wack with a sword|2|3|4
+attack|Punch|K.O.!|1|1|5
+attack|Blaster|Don't bring a knife to a gun fight|5|10|1
+attack|Knife|Just don't bring this to the gun fight|2|2|5
+spell|Potion|Basic heal potion|1|2|5
+spell|Advanced Potion|It's in the name|2|3|5
+spell|Pre-Workout|Don't consume dry|5|10|2
+spell|Coffee|Two shots of espresso|2|3|4
+spell|Mountain Dew|Product Placement|2|8|1
+spell|Photosynthesis|6th Grade Bio came in clutch|3|4|3
+defence|Advil|Also known as Ibuprofen|2|2|5
+defence|Waise Heill|Yes, another Inheritance reference|2|5|1
+defence|Bandaid|Self-Explanatory|1|1|5
+defence|Shield|Somehow shields give back health|3|4|2
+defence|Surgical Mask|CDC Approved|5|10|2
+defence|Apple|One a day keeps the doctor away!|3|12|1
