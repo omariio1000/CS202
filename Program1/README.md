@@ -15,15 +15,14 @@ Cards can be found either once or multiple times in a deck, depending on their p
 
 Deck File Format:
 
-Separated by the '|' (pipe) character. Format is:
+Separated by the '|' (pipe) character. Format is: 
 Card Type|Card Name|Card Information or Description|Energy Required|Card Power|Number of Cards in Deck
 
 Ex. attack|Sword|Good old wack with a sword|2|3|4
 
 IMPORTANT: 
-Card types are case sensitive, they must be either 'attack', 'spell', or 'defence'
-When inputting card name for use, it is also case sensitive
-Energy required, card power, and number of cards in deck must be integers, or the program won't work as expected
+Card types are case sensitive, they must be either 'attack', 'spell', or 'defence'. 
+When inputting card name for use, it is also case sensitive. 
+Energy required, card power, and number of cards in deck must be integers, or the program won't work as expected. 
 
 MOST IMPORTANT: Enjoy!
-
