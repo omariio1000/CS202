@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * January 11, 2022
+ * File input implementation
+ */
+
 #include <cstring>
 #include <cctype>
 #include <iostream>
@@ -13,7 +19,7 @@ using namespace std;
 
 files::files() {}
 
-int files::readFile(string fileName, vector<card*> & cards) {
+int files::readFile(string fileName, vector<card*> & cards) {//reading file with deck of cards
     ifstream file;
     file.open(fileName);
 

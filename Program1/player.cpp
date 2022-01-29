@@ -31,7 +31,7 @@ player::player(char * inName) {
     strcpy(name, inName);
 }
 
-player::player(const player & old) {
+player::player(const player & old) {//copy constructor
     name = new char[strlen(old.name) + 1];
     strcpy (name, old.name);
 }
@@ -41,25 +41,26 @@ player::~player() {
     name = nullptr;
 }
 
-int player::changeEnergy(int energyCount, bool changeType) {
+int player::changeEnergy(int energyCount, bool changeType) {//change energy either positive or negative
     if (changeType) energy += energyCount;
     else energy -= energyCount;
     return energyCount;
 }
 
-int player::changeHealth(int healthAmount, bool changeType) {
+int player::changeHealth(int healthAmount, bool changeType) {//change health either positive or negative
     if (changeType) health += healthAmount;
     else health -= healthAmount;
     return healthAmount;
 }
 
-void player::addToHand(card * adding) {
+void player::addToHand(card * adding) {//adding card to a player's hand
     hand.push_back(adding);
     cout << endl << "This is the card you drew:" << endl;
     adding -> display();
     return;
 }
 
+//using a card against another player or oneself
 int player::useCard(char * cardName, player & affecting, deck & myDeck, int forHistory) {
     if (!cardName) return -2;
     /*int type = toUse -> getType();
@@ -72,7 +73,7 @@ int player::useCard(char * cardName, player & affecting, deck & myDeck, int forH
 
     card * toUse = nullptr;
     vector<card*>::iterator v;
-    for (v = hand.begin(); v != hand.end(); v++) {
+    for (v = hand.begin(); v != hand.end(); v++) {//iterating through player's hand to find card by name
         if ((*v) -> compare(cardName)) {
             foundCard = true;        
             toUse = (*v);
@@ -85,6 +86,7 @@ int player::useCard(char * cardName, player & affecting, deck & myDeck, int forH
     if (!foundCard) return -3;
     if (energy < toUse -> getEnergyRequired()) return 0;
 
+    //calling derived class function with dynamic cast
     attack * ptr = dynamic_cast<attack*> (toUse);
     if (ptr) ptr -> attackPlayer(affecting);
     else {
@@ -101,7 +103,7 @@ int player::useCard(char * cardName, player & affecting, deck & myDeck, int forH
     return 1;
 }
 
-void player::display() {
+void player::display() {//displaying player info and hand
     cout << endl << CYAN << name << RESET << endl;
     cout << name << "'s Health: " << health << endl;
     cout << name << "'s Energy: " << energy << endl;
@@ -111,7 +113,7 @@ void player::display() {
     return;
 }
 
-void player::displayHand() {
+void player::displayHand() {//displaying player hand
     if (hand.size() == 0) {
         cout << endl << "Empty Hand!" << endl;
         return;
@@ -131,20 +133,20 @@ void player::displayHand() {
     return;
 }
 
-void player:: displayName() const {
+void player:: displayName() const {//displaying player name
     cout << name;
 }
 
-bool player::checkHealth() const {
+bool player::checkHealth() const {//making sure player health isn't zero
     if (health > 0) return true;
     return false;
 }
 
-char* player::getName() const {
+char* player::getName() const {//getter for name for card history
     return name;
 }
 
-int player::findWinner(const player & other) const {
+int player::findWinner(const player & other) const {//checking who won
     if (health > other.health) return 2;
     else if (health < other.health) return 3;
     else {
@@ -171,24 +173,24 @@ node::~node() {
     data = nullptr;
 }
 
-card *& node::getData() {
+card *& node::getData() {//getter for data
     return data;
 }
 
-node *& node::getNext() {
+node *& node::getNext() {//getter for next node
     return next;
 }
 
-void node::setNext(node * inNext) {
+void node::setNext(node * inNext) {//setter for next node
     next = inNext;
     return;
 }
 
-void node::setData(card * inData) {
+void node::setData(card * inData) {//setter for data
     data = inData;
 }
 
-void node::display() const {
+void node::display() const {//display node contents
     if (!data) return;
     /*int type = data -> getType();    
 
@@ -225,7 +227,7 @@ deck::~deck() {
     //if (discardHead) delete discardHead;
 }
 
-void deck::display() {
+void deck::display() {//displaying deck and discard pile
     cout << endl << "This is the deck." << endl;
     if (rear) {
         rear -> display();
@@ -239,19 +241,19 @@ void deck::display() {
 
 }
 
-void deck::display(node * current){
+void deck::display(node * current){//displaying for CLL deck
     if (!current || current == rear) return;
     current -> display();
     return display(current -> getNext());
 }
 
-void deck::display(vector<card*> & cards) {
+void deck::display(vector<card*> & cards) {//displaying for vector discard pile
     vector<card*>::iterator v;
     for (v = cards.begin(); v != cards.end(); v++) (*v) -> display();
     return;
 }
 
-void deck::addCards(vector<card*> & cards) {
+void deck::addCards(vector<card*> & cards) {//adding cards to deck from a vector
     vector<card*>::iterator v;
     for (v = cards.begin(); v != cards.end(); v++) addCards(*v);
     /*{
@@ -264,7 +266,7 @@ void deck::addCards(vector<card*> & cards) {
     return;
 }
 
-void deck::addCards(card * adding) {
+void deck::addCards(card * adding) {//adding cards to CLL given a card object
     if (!rear) {
         rear = new node(adding);
         rear -> setNext(rear);
@@ -277,7 +279,7 @@ void deck::addCards(card * adding) {
     return;
 }
 
-int deck::drawCard(player & drawing) {
+int deck::drawCard(player & drawing) {//drawing a card and giving it to a player
     if (!rear) return 0;
     
     card * myCard = nullptr;
@@ -301,7 +303,7 @@ int deck::drawCard(player & drawing) {
     return 1;
 }
 
-int deck::shuffle() {
+int deck::shuffle() {//shuffling the deck of cards
     if (!rear) return 0;
 
     int amount = 0;
@@ -344,7 +346,7 @@ int deck::shuffle() {
   return discard(data, discarding -> getNext());
   }*/
 
-int deck::discard(card * data, int forHistory) {
+int deck::discard(card * data, int forHistory) {//discarding a card and adding to history
     discardPile.push_back(data);
     //cout << "THIS IS THE DISCARDED CARD: ";
     //data -> display();
@@ -373,7 +375,7 @@ int deck::discard(card * data, int forHistory) {
   return copyDiscard(deckNode -> getNext(), discardNode -> getNext());
   }*/
 
-void deck::copyDiscard() {
+void deck::copyDiscard() {//copying the discard pile and adding it to the deck
     addCards(discardPile);
     vector<card*>::iterator v;
     for (v = discardPile.begin(); v != discardPile.end(); v++)
@@ -383,18 +385,18 @@ void deck::copyDiscard() {
     return;
 }
 
-int deck::reShuffleDiscard() {
+int deck::reShuffleDiscard() {//reshuffling discard pile into deck
     int items = discardPile.size();
     copyDiscard();
     shuffle();
     return items;
 }
 
-void deck::addToHistory(card * data, int forHistory) {
+void deck::addToHistory(card * data, int forHistory) {//wrapper to add card to player history
     return addToHistory(data, playerHistory[forHistory]);
 }
 
-void deck::addToHistory(card * data, node *& current) {
+void deck::addToHistory(card * data, node *& current) {//recursive adding to player history LLL
     if (!current) {
         current = new node(data);
         return;
@@ -402,7 +404,7 @@ void deck::addToHistory(card * data, node *& current) {
     return addToHistory(data, current -> getNext());
 }
 
-void deck::displayHistory(char * player1, char * player2) {
+void deck::displayHistory(char * player1, char * player2) {//wrapper to display player history
     cout << endl << player1 << "'s history:" << endl;
     displayHistory(playerHistory[0]);
     cout << endl << player2 << "'s history:" << endl;
@@ -410,7 +412,7 @@ void deck::displayHistory(char * player1, char * player2) {
     return;
 }
 
-void deck::displayHistory(node * current) {
+void deck::displayHistory(node * current) {//recursive display player history
     if (!current) return;
     current -> display();
     return displayHistory(current -> getNext());

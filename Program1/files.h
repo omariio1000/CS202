@@ -1,7 +1,7 @@
 /* Omar Nassar
  * Portland State University CS202
  * January 11, 2022
- * File input class to parse and add cards
+ * File input class to parse and add cards and namespace for console colors
  */
 
 #ifndef files_h
@@ -25,7 +25,7 @@ class files {//File input class
         int readFile(std::string fileName, std::vector<card*> & cards);
 };
 
-namespace colors {
+namespace colors {//wanted to try out namespaces, and used this to add colors to console
     #define RESET   "\033[0m"
     #define RED     "\033[31m"
     #define GREEN   "\033[32m"

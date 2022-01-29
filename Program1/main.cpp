@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * January 11, 2022
+ * Portland State University CS202
+ * Main class for card game program for practicing OOP
+ */
+
 #include <cstring>
 #include <cctype>
 #include <iostream>
@@ -22,14 +28,15 @@ int main() {
     vector<card*> myCards;
     vector<card*>::iterator v;
 
-    //cout << endl << "What is the name of your file?" << endl << GREEN << ">> " << RESET;
-    //getline(cin, input);
-    //cin.clear();
-    //cin.ignore(100, '\n');
-    //int cards = fileReader.readFile(input, myCards);
+    cout << endl << "What is the name of your file?" << endl << GREEN << ">> " << RESET;
+    getline(cin, input);
+    cin.clear();
+    cin.ignore(100, '\n');
+    int cards = fileReader.readFile(input, myCards);
 
-    int cards= fileReader.readFile("deck1.txt", myCards);
+    //int cards = fileReader.readFile("deck1.txt", myCards);
 
+    //preparing deck of cards
     deck myDeck;
 
     if (cards != 0) {
@@ -53,6 +60,7 @@ int main() {
     myDeck.shuffle();
     //myDeck.display();
 
+    //initializing players
     char * player1Name = new char[100];
     char * player2Name = new char[100];
     cout << endl << "What is the first player's name?" << endl << GREEN << ">> " << RESET;
@@ -79,7 +87,7 @@ int main() {
     bool playing = true;
     int currentPlayer = 0;
     int otherPlayer = 1;
-    while (playing && players[0].checkHealth() && players[1].checkHealth()) {
+    while (playing && players[0].checkHealth() && players[1].checkHealth()) {//main loop for playing
         cout << endl << YELLOW << "-----------------------------" << RESET << endl;
         cout << endl << "Current Player: ";
         players[currentPlayer].display();
@@ -238,12 +246,13 @@ int main() {
 
     cout << endl << "Thanks for playing!" << endl;
 
+    //calling destructors for all cards
     for (v = myCards.begin(); v != myCards.end(); v++) if (*v) delete (*v);
 
     return 0;
 }
 
-void switchPlayer(int & current, int & other) {
+void switchPlayer(int & current, int & other) {//function to switch current player
     int temp = current;
     current = other;
     other = temp;
