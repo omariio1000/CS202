@@ -86,6 +86,11 @@ attack::attack(char * name, string description, int energy, int inPower) : card(
     strcpy(required, "Required to have a char array in at least one derived class lol");
 }
 
+attack::attack(const attack & object) : card::card(object) {
+    required = new char[strlen(object.required) + 1];
+    strcpy(required, object.required);
+}
+
 attack::~attack() {
     if (required) delete[] required;
     required = nullptr;

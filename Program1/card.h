@@ -46,6 +46,7 @@ class attack : public card {
         //Additional Constructors
         attack();
         attack(char * name = (char*)(""), std::string description = "", int energy = 0, int power = 0);
+        attack(const attack &);
         ~attack();
 
         void display() const;
