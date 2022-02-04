@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cstdlib>
 //#define EOF = -1;
-
+#include "error.h"
 
 //This class interface is a subset of Lab#1 on OOP. You will want to examine       
 //the .h file to understand how these classes are put together. There are some     

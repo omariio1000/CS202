@@ -10,6 +10,14 @@ int main()
     char temp[MAX];
     char response;
     
+    /*try {
+        address new_address(nullptr, nullptr);
+    }
+    catch (NULL_STRING) {
+        cout << "NULL STRING ERROR" << endl;
+        return 1;
+    }*/
+
     //experiment with the hourly employee class
     store kohls;
     

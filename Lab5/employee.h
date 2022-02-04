@@ -44,6 +44,7 @@ class employee: public person
 
               void display(node * root) const;
               void copy_tree(node * & dest_root, node * source_root) const;
+              bool compare(node * root, char * match);
 
               
 };
