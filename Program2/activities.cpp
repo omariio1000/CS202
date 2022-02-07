@@ -42,6 +42,18 @@ activity::~activity() {
     title = nullptr;
 }
 
+void activity::display() const {
+    cout << endl << "Title: " << title << endl;
+    cout << "Details: " << details << endl;
+    cout << "Difficulty: " << difficulty << endl;
+    return;
+}
+
+int activity::rateDifficulty(int inDifficulty) {
+    difficulty = inDifficulty;
+    return difficulty;
+}
+
 preparation::preparation() : activity() {
     sample = nullptr;
 }
@@ -56,7 +68,7 @@ preparation::preparation(char * title, string details, int inType, char * inSamp
 preparation::preparation(const preparation & prep) : activity(prep) {
     type = prep.type;
 
-    sample = new char[stlen(prep.sample) + 1];
+    sample = new char[strlen(prep.sample) + 1];
     strcpy(sample, prep.sample);
 }
 
@@ -65,22 +77,20 @@ preparation::~preparation() {
     sample = nullptr;
 }
 
-preparation::display() const {
-    cout << endl << "Title: " << title << endl;
-    cout << "Details: " << details << endl;
+void preparation::display() const {
+    activity::display();
     //still need to do type stuff
-    cout << "Difficulty: " << difficulty << endl;
-    if (!answer.empty()) cout << "Here's the answer: " << endl;
+    if (sample) cout << "Here's a sample question: " << sample << endl;
     if (completed) cout << "This question is marked as completed." << endl;
+    return;
 }
 
-int preparation::setData(char * inTitle, std::string inDetails, int inType, char * inSample) {
+int preparation::setData(char * inTitle, string inDetails, int inType, char * inSample) {
     if (!inTitle || !inSample || inDetails.empty()) return 0;
 
     if (title) delete title;
     if (sample) delete sample;
-    if (!details.empty()) details.erase();
-    
+
     title = new char[strlen(inTitle) + 1];
     strcpy(title, inTitle);
 
@@ -93,12 +103,86 @@ int preparation::setData(char * inTitle, std::string inDetails, int inType, char
     return 1;
 }
 
-int preparation::rateDifficulty(int inDifficulty) {
-    difficulty = inDifficulty;
-    return difficulty;
+bool preparation::markCompleted(bool inCompleted) {
+    completed = inCompleted;
+    return completed;
 }
 
-bool preparation::markCompleted(bool inCompleted) {
+problems::problems() : activity() {}
+
+problems::problems(char * inTitle, string inDetails, string inPrototype) : activity(inTitle, inDetails) {
+    prototype = inPrototype;
+}
+
+void problems::display() const {
+    activity::display(); 
+    if (!prototype.empty()) cout << "Here's the prototype: " << endl;
+    if (!answer.empty()) cout << "Here's the answer: " << endl;
+    return;
+}
+
+int problems::setData(char * inTitle, string inDetails, string inPrototype) {
+    if (!inTitle || inDetails.empty() || inPrototype.empty()) return 0;
+
+    if (title) delete title;
+
+    title = new char[strlen(inTitle) + 1];
+    strcpy(title, inTitle);
+
+    details = inDetails;
+    prototype = inPrototype;
+
+    return 1;
+}
+
+int problems::answerQuestion(string inAnswer) {
+    if (inAnswer.empty()) return 0;
+    
+    if (!answer.empty()) answer.erase();
+
+    answer = inAnswer;
+
+    return 1;
+}
+
+concepts::concepts() : activity() {}
+
+concepts::concepts(char * title, string details) : activity(title, details) {}
+
+void concepts::display() const {
+    activity::display();
+    if (proficiency >= 0) cout << "Your proficiency level: " << proficiency << endl;
+    if (completed) cout << GREEN << "This concept is marked as completed." << RESET << endl;
+    return; 
+}
+
+int concepts::setData(char * inTitle, string inDetails, int inProficiency) {
+    if (!inTitle || inDetails.empty()) return 0;
+
+    if (title) delete title;
+
+    title = new char[strlen(inTitle) + 1];
+    strcpy(title, inTitle);
+
+    details = inDetails;
+
+    if (inProficiency >= 0) proficiency = inProficiency;
+
+    return 1;
+}
+
+int concepts::setProficiency(int inProficiency) {
+    if (inProficiency >= 0) proficiency = inProficiency;
+    return proficiency;
+}
+
+int concepts::editDetails(string inDetails) {
+    if (inDetails.empty()) return 0;
+    details = inDetails;
+    return 1;
+}
+
+bool concepts::markCompleted(bool inCompleted) {
     completed = inCompleted;
     return completed;
 }

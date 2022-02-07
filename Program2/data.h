@@ -25,14 +25,14 @@ class node {//DLL node class
         node(const node & node);
         ~node();
         
-        activity* getData();
+        activity * getData();
         void setData(activity * data);
 
         node *& getNext();
-        void setNext(node *& next);
+        void setNext(node * next);
 
         node *& getPrevious();
-        void setPrevious(node *& previous);
+        void setPrevious(node * previous);
 
         void display() const;
 
@@ -45,7 +45,7 @@ class node {//DLL node class
 class ADLL {//Class for array of DLLs data structure
     public:
         ADLL(int types = 3);
-        ADLL(const ADLL & obj)
+        ADLL(const ADLL & obj);
         ~ADLL();
 
         int insertData(node * inserting);
@@ -62,3 +62,5 @@ class ADLL {//Class for array of DLLs data structure
         
         //Recursive Functions (yet to add)
 };
+
+#endif

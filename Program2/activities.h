@@ -21,11 +21,11 @@ class activity {//Base class for activities/questions
         virtual ~activity();//Virtual destructor because of virtual functions
 
         //Virtual functions eliminate need for dynamic cast
-        virtual void display() = 0 const;
+        virtual void display() const;
         virtual int setData() = 0;
         virtual int editDetails() = 0;
         virtual int markCompleted() = 0;
-        virtual int rateDifficulty() = 0;
+        int rateDifficulty(int difficulty);
 
     protected:
         activity();
@@ -46,8 +46,7 @@ class preparation : public activity {//Derived exam prep questions
 
         void display() const;
         int setData(char * title, std::string details, int type, char * sample);
-        int rateDifficulty(int difficulty);
-        bool markCmpleted(bool completed);
+        bool markCompleted(bool completed);
         
         
     private:
@@ -64,7 +63,6 @@ class problems : public activity {//Derived practice problems
         void display() const;
         int setData(char * title, std::string details, std::string prototype);
         int answerQuestion(std::string answer);
-        int rateDifficulty(int difficulty);
 
     private:
         std::string prototype;
@@ -78,12 +76,12 @@ class concepts : public activity {//Derived concepts for future study
 
         void display() const;
         int setData(char * title, std::string details, int proficiency);
+        int setProficiency(int proficiency);
         int editDetails(std::string details);
-        int rateDifficulty(int difficulty);
         bool markCompleted(bool completed);
 
     private:
-        int proficiency;
+        int proficiency = -1;
         bool completed;
 };
 
