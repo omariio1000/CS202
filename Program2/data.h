@@ -25,7 +25,7 @@ class node {//DLL node class
         node(const node & node);
         ~node();
         
-        activity * getData();
+        activity *& getData();
         void setData(activity * data);
 
         node *& getNext();
@@ -35,6 +35,8 @@ class node {//DLL node class
         void setPrevious(node * previous);
 
         void display() const;
+        bool compare(char * title) const;
+        bool compare(const activity * comp) const;
 
     private:
         activity * data; //data being stored is an activity/question
@@ -48,19 +50,24 @@ class ADLL {//Class for array of DLLs data structure
         ADLL(const ADLL & obj);
         ~ADLL();
 
-        int insertData(node * inserting);
-        int remove(char * title);
+        int insertData(node *& inserting);
+        int remove(char * title, int type);
         void displayAll() const;
         void displayType(int type) const;
-        int retrieve(char * title);
-        int removeAll();
-        int removeType(int type);
+        activity *&  retrieve(char * title, int type);
+        void removeAll();
+        void removeType(int type);
 
     private:
         node ** questions; //double pointer for array of pointers
         int types; //different types of activities
         
         //Recursive Functions (yet to add)
+        void copyDLL(node *& destination, node * source, node * previous);
+        int insertData(node * current, node * previous, node *& inserting, int type);
+        int remove(node *& current, char * title);
+        activity *& retrieve(node * current, char * title);
+        void displayType(node * displaying) const;
 };
 
 #endif

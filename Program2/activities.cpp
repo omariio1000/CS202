@@ -43,15 +43,28 @@ activity::~activity() {
 }
 
 void activity::display() const {
-    cout << endl << "Title: " << title << endl;
+    if (!title) throw title;
+    if (details.empty()) throw details;
+    
+    cout << endl << "Title: " << title << RESET << endl;
     cout << "Details: " << details << endl;
-    cout << "Difficulty: " << difficulty << endl;
+    if (difficulty > 0) cout << "Difficulty: " << difficulty << endl;
     return;
 }
 
 int activity::rateDifficulty(int inDifficulty) {
     difficulty = inDifficulty;
     return difficulty;
+}
+
+bool activity::compare(char * inTitle) const {
+    if (strcmp(title, inTitle) == 0) return true;
+    return false;
+}
+
+bool activity::compare(const activity * comp) const {
+    if (strcmp(title, comp -> title) == 0) return true;
+    return false;
 }
 
 preparation::preparation() : activity() {
@@ -78,8 +91,14 @@ preparation::~preparation() {
 }
 
 void preparation::display() const {
+    cout << CYAN;
     activity::display();
     //still need to do type stuff
+
+    if (type == 1) cout << "Quiz Prep" << endl;
+    else if (type == 2) cout << "Midterm Prep" << endl;
+    else if (type == 3) cout << "Final Prep" << endl;
+    else if (type == 4) cout << "Proficiency Demo Prep" << endl;
     if (sample) cout << "Here's a sample question: " << sample << endl;
     if (completed) cout << "This question is marked as completed." << endl;
     return;
@@ -115,9 +134,10 @@ problems::problems(char * inTitle, string inDetails, string inPrototype) : activ
 }
 
 void problems::display() const {
+    cout << GREEN;
     activity::display(); 
     if (!prototype.empty()) cout << "Here's the prototype: " << endl;
-    if (!answer.empty()) cout << "Here's the answer: " << endl;
+    if (!answer.empty()) cout << GREEN << "Here's the answer: " << RESET << endl;
     return;
 }
 
@@ -136,7 +156,7 @@ int problems::setData(char * inTitle, string inDetails, string inPrototype) {
 }
 
 int problems::answerQuestion(string inAnswer) {
-    if (inAnswer.empty()) return 0;
+    if (inAnswer.empty()) throw inAnswer;
     
     if (!answer.empty()) answer.erase();
 
@@ -147,9 +167,12 @@ int problems::answerQuestion(string inAnswer) {
 
 concepts::concepts() : activity() {}
 
-concepts::concepts(char * title, string details) : activity(title, details) {}
+concepts::concepts(char * title, string details, int inProficiency) : activity(title, details) {
+    proficiency = inProficiency;
+}
 
 void concepts::display() const {
+    cout << MAGENTA;
     activity::display();
     if (proficiency >= 0) cout << "Your proficiency level: " << proficiency << endl;
     if (completed) cout << GREEN << "This concept is marked as completed." << RESET << endl;
@@ -177,7 +200,7 @@ int concepts::setProficiency(int inProficiency) {
 }
 
 int concepts::editDetails(string inDetails) {
-    if (inDetails.empty()) return 0;
+    if (inDetails.empty()) throw inDetails;
     details = inDetails;
     return 1;
 }

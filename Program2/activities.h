@@ -26,6 +26,8 @@ class activity {//Base class for activities/questions
         virtual int editDetails() = 0;
         virtual int markCompleted() = 0;
         int rateDifficulty(int difficulty);
+        bool compare(char * title) const;
+        bool compare(const activity * comp) const;
 
     protected:
         activity();
@@ -50,7 +52,7 @@ class preparation : public activity {//Derived exam prep questions
         
         
     private:
-        int type = -1;
+        int type;
         char * sample;
         bool completed;
 };
@@ -72,7 +74,7 @@ class problems : public activity {//Derived practice problems
 class concepts : public activity {//Derived concepts for future study
     public:
         concepts();
-        concepts(char * title, std::string details);
+        concepts(char * title, std::string details, int proficiency);
 
         void display() const;
         int setData(char * title, std::string details, int proficiency);
