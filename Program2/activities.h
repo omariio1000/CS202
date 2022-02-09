@@ -22,9 +22,6 @@ class activity {//Base class for activities/questions
 
         //Virtual functions eliminate need for dynamic cast
         virtual void display() const;
-        virtual int setData() = 0;
-        virtual int editDetails() = 0;
-        virtual int markCompleted() = 0;
         int rateDifficulty(int difficulty);
         bool compare(char * title) const;
         bool compare(const activity * comp) const;

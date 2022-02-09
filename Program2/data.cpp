@@ -198,6 +198,7 @@ void ADLL::displayAll() const {
 }
 
 void ADLL::displayType(int type) const {
+    if (type < 0 || type > 2) throw type;
     displayType(questions[type]);
     return;
 }
@@ -216,6 +217,7 @@ void ADLL::removeAll() {
 }
 
 void ADLL::removeType(int type) {
+    if (type < 0 || type > 2) throw type;
     if (!questions[type]) return;
 
     delete questions[type];
