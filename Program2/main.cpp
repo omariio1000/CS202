@@ -277,6 +277,7 @@ int main() {
             }
 
             if (myActivity) {//If retrieved
+                myActivity -> display();
                 if (answer == 0) {//exam prep
                     //should be able to mark as completed
                     cout << endl << "Would you like to mark this as completed? (y/n)" << endl;
@@ -295,10 +296,97 @@ int main() {
                 
                 else if (answer == 1) {//practice problem
                     //should be able to answer question
+                    cout << endl << "Would you like to answer the question? (y/n)" << endl;
+                    cout << YELLOW << ">> ";
+
+                    char yesno;
+                    cin >> yesno;
+                    cin.clear();
+                    cin.ignore(100, '\n');
+
+                    if (yesno == 'y' || yesno == 'Y') {
+                        string answer;
+                        cout << endl << "What is the answer?" << endl << YELLOW << ">> " << RESET;
+                        cin >> answer;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        int ret = -1;
+                        try {
+                            ret = dynamic_cast<problems*> (myActivity) -> answerQuestion(answer);
+                        }
+                        catch (string) {
+                            cout << endl << RED << "Invalid Input." << endl << RESET;
+                        }
+                        
+                        if (ret == 1) cout << endl << GREEN << "Problem Answered Successfully." << RESET << endl;
+                        else cout << endl << RED << "Problem Not Answered." << RESET << endl;
+                    }
+                    else if (yesno != 'n' || yesno != 'N') cout << RED << endl << "No answer given." << RESET << endl;
                 }
 
                 else if (answer == 2) {//study concepts
                     //should be able to change proficiency, edit details, or mark completed
+                    cout << endl << "Would you like to:" << endl;
+                    cout << "1: Change Proficiency Level" << endl;
+                    cout << "2: Edit Details" << endl;
+                    cout << "3: Mark as Completed" << endl << YELLOW << ">> " << RESET;
+
+                    cin >> answer;
+                    cin.clear();
+                    cin.ignore(100, '\n');
+
+                    if (answer == 1) {//change proficiency level
+                        cout << endl << "What is your new proficiency level?" << endl << YELLOW << ">> " << RESET;
+                        cin >> answer;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        try {
+                            answer = dynamic_cast<concepts*> (myActivity) -> setProficiency(answer);
+                            cout << GREEN << endl << "Proficiency Level Set to " << answer << RESET << endl;
+                        }
+                        catch (int) {
+                            cout << RED << endl << "Proficiency Level Cannot Be Below Zero." << RESET << endl;
+                        }
+
+                    }
+
+                    else if (answer == 2) {//edit details
+                        string details;
+                        cout << endl << "What would you like to change the details to?" << endl << YELLOW << ">> " << RESET;
+                        cin >> details;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        try {
+                            dynamic_cast<concepts*> (myActivity) -> editDetails(details);
+                            cout << endl << GREEN << "Details Updated Successfully." << RESET << endl;
+                        }
+                        catch (int) {
+                            cout << endl << RED << "Details Cannot be Empty!" << RESET << endl;
+                        }
+                    }
+
+                    else if (answer == 3) {//mark completed
+                        cout << endl << "Would you like to mark this as completed? (y/n)" << endl << YELLOW << ">> " << RESET;
+                        char yesno;
+                        cin >> yesno;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        if (yesno == 'y' || yesno == 'Y') {
+                            dynamic_cast<concepts*> (myActivity) -> markCompleted(true);
+                            cout << endl << GREEN << "Marked As Completed." << RESET << endl;
+                        }
+
+                        else if (yesno == 'n' || yesno == 'N') {
+                            dynamic_cast<concepts*> (myActivity) -> markCompleted(false);
+                            cout << endl << YELLOW << "Marked as Incomplete." << RESET << endl;
+                        }
+
+                        else cout << endl << RED << "Invalid Input." << RESET << endl;
+                    }
                 }
 
                 else cout << endl << RED << "This shouldn't happen..." << RESET << endl;

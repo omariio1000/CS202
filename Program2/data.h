@@ -64,7 +64,7 @@ class ADLL {//Class for array of DLLs data structure
         
         //Recursive Functions (yet to add)
         void copyDLL(node *& destination, node * source, node * previous);
-        int insertData(node * current, node * previous, node *& inserting, int type);
+        int insertData(node *& current, node * previous, node *& inserting, int type);
         int remove(node *& current, char * title);
         activity *& retrieve(node * current, char * title);
         void displayType(node * displaying) const;

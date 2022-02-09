@@ -141,7 +141,7 @@ int ADLL::insertData(node *& inserting) {
     else throw data;
 }
 
-int ADLL::insertData(node * current, node * prev, node *& inserting, int type) {
+int ADLL::insertData(node *& current, node * prev, node *& inserting, int type) {
     if (!current) {
         current = inserting;
         inserting -> setPrevious(prev);

@@ -76,13 +76,18 @@ preparation::preparation(char * title, string details, int inType, char * inSamp
 
     sample = new char[strlen(inSample) + 1];
     strcpy(sample, inSample);
+
+    sample = nullptr;
 }
 
 preparation::preparation(const preparation & prep) : activity(prep) {
     type = prep.type;
 
-    sample = new char[strlen(prep.sample) + 1];
-    strcpy(sample, prep.sample);
+    if (prep.sample) {
+        sample = new char[strlen(prep.sample) + 1];
+        strcpy(sample, prep.sample);
+    }
+    else sample = nullptr;
 }
 
 preparation::~preparation() {
@@ -93,12 +98,11 @@ preparation::~preparation() {
 void preparation::display() const {
     cout << CYAN;
     activity::display();
-    //still need to do type stuff
 
-    if (type == 1) cout << "Quiz Prep" << endl;
-    else if (type == 2) cout << "Midterm Prep" << endl;
-    else if (type == 3) cout << "Final Prep" << endl;
-    else if (type == 4) cout << "Proficiency Demo Prep" << endl;
+    if (type == 1) cout << "Type: Quiz Prep" << endl;
+    else if (type == 2) cout << "Type: Midterm Prep" << endl;
+    else if (type == 3) cout << "Type: Final Prep" << endl;
+    else if (type == 4) cout << "Type: Proficiency Demo Prep" << endl;
     if (sample) cout << "Here's a sample question: " << sample << endl;
     if (completed) cout << "This question is marked as completed." << endl;
     return;
@@ -157,7 +161,7 @@ int problems::setData(char * inTitle, string inDetails, string inPrototype) {
 
 int problems::answerQuestion(string inAnswer) {
     if (inAnswer.empty()) throw inAnswer;
-    
+
     if (!answer.empty()) answer.erase();
 
     answer = inAnswer;
@@ -195,7 +199,9 @@ int concepts::setData(char * inTitle, string inDetails, int inProficiency) {
 }
 
 int concepts::setProficiency(int inProficiency) {
-    if (inProficiency >= 0) proficiency = inProficiency;
+    if (inProficiency < 0) throw inProficiency;
+
+    proficiency = inProficiency;
     return proficiency;
 }
 
