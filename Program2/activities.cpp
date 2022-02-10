@@ -53,6 +53,7 @@ void activity::display() const {//throws char * and string
 }
 
 int activity::rateDifficulty(int inDifficulty) {
+    if (inDifficulty < 0 || inDifficulty > 10) throw inDifficulty;
     difficulty = inDifficulty;
     return difficulty;
 }
@@ -102,7 +103,7 @@ void preparation::display() const {//virtual function
     else if (type == 3) cout << "Type: Final Prep" << endl;
     else if (type == 4) cout << "Type: Proficiency Demo Prep" << endl;
     if (sample) cout << "Here's a sample question: " << sample << endl;
-    if (completed) cout << "This question is marked as completed." << endl;
+    if (completed) cout << GREEN << "This question is marked as completed." << RESET << endl;
     return;
 }
 

@@ -65,7 +65,6 @@ int main() {
             cin.ignore(100, '\n');
 
 
-
             if (answer == 1) {//Exam Prep
                 int type;
                 char * sample = new char[100];
@@ -88,7 +87,7 @@ int main() {
                 cin.ignore(100, '\n');
 
                 data = new preparation(title, details, type, sample);
-                
+
                 if (sample) delete[] sample;
                 sample = nullptr;
             }
@@ -237,7 +236,7 @@ int main() {
                 if (ret == 1) cout << endl << GREEN << "Successfully Removed." << RESET << endl;
                 else if (ret == 0) cout << endl << RED << "Nothing Found With That Title." << RESET << endl;
                 else cout << endl << RED << "Nothing Removed." << RESET << endl;
-                
+
                 if (title) delete title;
                 title = nullptr;
             }
@@ -281,32 +280,71 @@ int main() {
             if (myActivity) {//If retrieved
                 myActivity -> display();
                 if (answer == 0) {//exam prep
-                    //should be able to mark as completed
-                    cout << endl << "Would you like to mark this as completed? (y/n)" << RESET << endl;
-                    cout << YELLOW << ">> ";
+                    cout << endl << "Would you like to:" << endl;
+                    cout << "1: Rate Difficulty" << endl;
+                    cout << "2: Change Completion Status" << endl << YELLOW << ">> " << RESET;
 
-                    char yesno;
-                    cin >> yesno;
+                    cin >> answer;
                     cin.clear();
                     cin.ignore(100, '\n');
 
-                    if (yesno == 'y' || yesno == 'Y') dynamic_cast<preparation*> (myActivity) -> markCompleted(true);
-                    else if (yesno == 'n' || yesno == 'N') dynamic_cast<preparation*> (myActivity) -> markCompleted(false);
+                    if (answer == 1) {//rate difficulty
+                        cout << endl << "What would you like to rate difficulty as? (0-10)" << endl << YELLOW << ">> " << RESET;
+                        cin >> answer;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        try {
+                            myActivity -> rateDifficulty(answer);
+                            cout << endl << GREEN << "Difficulty set to " << answer << RESET << endl;
+                        }
+                        catch (int x) {
+                            if (x < 0) cout << RED << endl << "Can't set difficulty below zero." << RESET << endl;
+                            else cout << RED << endl << "Surely it can't be that hard..." << RESET << endl;
+                        }
+                    }
+
+                    else if (answer == 2) {//mark completed
+                        cout << endl << "Would you like to mark this as completed? (y/n)" << RESET << endl;
+                        cout << YELLOW << ">> " << RESET;
+
+                        char yesno;
+                        cin >> yesno;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        if (yesno == 'y' || yesno == 'Y') dynamic_cast<preparation*> (myActivity) -> markCompleted(true);
+                        else if (yesno == 'n' || yesno == 'N') dynamic_cast<preparation*> (myActivity) -> markCompleted(false);
+                        else cout << RED << endl << "Invalid Input." << RESET << endl;
+                    }
+
                     else cout << RED << endl << "Invalid Input." << RESET << endl;
-
                 }
-                
-                else if (answer == 1) {//practice problem
-                    //should be able to answer question
-                    cout << endl << "Would you like to answer the question? (y/n)" << endl;
-                    cout << YELLOW << ">> " << RESET;
 
-                    char yesno;
-                    cin >> yesno;
+                else if (answer == 1) {//practice problem
+                    cout << endl << "Would you liek to:" << endl;
+                    cout << "1: Rate Difficulty" << endl;
+                    cout << "2: Answer Question" << endl << YELLOW << ">> " << RESET;
+
+                    cin >> answer;
                     cin.clear();
                     cin.ignore(100, '\n');
 
-                    if (yesno == 'y' || yesno == 'Y') {
+                    if (answer == 1) {//rate difficulty
+                        cout << endl << "What would you like to rate difficulty as? (0-10)" << endl << YELLOW << ">> " << RESET;
+                        cin >> answer;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        try {
+                            myActivity -> rateDifficulty(answer);
+                            cout << endl << GREEN << "Difficulty set to " << answer << RESET << endl;
+                        }
+                        catch (int x) {
+                            if (x < 0) cout << RED << endl << "Can't set difficulty below zero." << RESET << endl;
+                            else cout << RED << endl << "Surely it can't be that hard..." << RESET << endl;
+                        }
+
+                    }
+                    else if (answer == 2) {//answer question
                         string answer;
                         cout << endl << "What is the answer?" << endl << YELLOW << ">> " << RESET;
                         cin >> answer;
@@ -320,11 +358,11 @@ int main() {
                         catch (string) {
                             cout << endl << RED << "Invalid Input." << endl << RESET;
                         }
-                        
+
                         if (ret == 1) cout << endl << GREEN << "Problem Answered Successfully." << RESET << endl;
                         else cout << endl << RED << "Problem Not Answered." << RESET << endl;
                     }
-                    else if (yesno != 'n' || yesno != 'N') cout << RED << endl << "No answer given." << RESET << endl;
+                    else cout << RED << endl << "Invalid Input." << RESET << endl;
                 }
 
                 else if (answer == 2) {//study concepts
@@ -332,7 +370,8 @@ int main() {
                     cout << endl << "Would you like to:" << endl;
                     cout << "1: Change Proficiency Level" << endl;
                     cout << "2: Edit Details" << endl;
-                    cout << "3: Change Completion Status" << endl << YELLOW << ">> " << RESET;
+                    cout << "3: Change Completion Status" << endl;
+                    cout << "4: Rate Difficulty" << endl << YELLOW << ">> " << RESET;
 
                     cin >> answer;
                     cin.clear();
@@ -389,6 +428,21 @@ int main() {
 
                         else cout << endl << RED << "Invalid Input." << RESET << endl;
                     }
+                    else if (answer == 4) {//change difficulty
+                        cout << endl << "What would you like to rate difficulty as? (0-10)" << endl << YELLOW << ">> " << RESET;
+                        cin >> answer;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        try {
+                            myActivity -> rateDifficulty(answer);
+                            cout << endl << GREEN << "Difficulty set to " << answer << RESET << endl;
+                        }
+                        catch (int x) {
+                            if (x < 0) cout << RED << endl << "Can't set difficulty below zero." << RESET << endl;
+                            else cout << RED << endl << "Surely it can't be that hard..." << RESET << endl;
+                        }
+                    }
+                    else cout << endl << RED << "Invalid Input." << RESET << endl;
                 }
 
                 else cout << endl << RED << "This shouldn't happen..." << RESET << endl;
