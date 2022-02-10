@@ -20,11 +20,13 @@
 
 class node {//DLL node class
     public:
+        //constructors and destructor
         node();
         node(activity * data);
         node(const node & node);
         ~node();
         
+        //getters and setters
         activity *& getData();
         void setData(activity * data);
 
@@ -34,9 +36,11 @@ class node {//DLL node class
         node *& getPrevious();
         void setPrevious(node * previous);
 
+        //other functions
         void display() const;
         bool compare(char * title) const;
         bool compare(const activity * comp) const;
+        //void nullify();
 
     private:
         activity * data; //data being stored is an activity/question
@@ -46,6 +50,7 @@ class node {//DLL node class
 
 class ADLL {//Class for array of DLLs data structure
     public:
+        //constructors and destructor
         ADLL(int types = 3);
         ADLL(const ADLL & obj);
         ~ADLL();
@@ -62,7 +67,7 @@ class ADLL {//Class for array of DLLs data structure
         node ** questions; //double pointer for array of pointers
         int types; //different types of activities
         
-        //Recursive Functions (yet to add)
+        //Recursive Functions
         void copyDLL(node *& destination, node * source, node * previous);
         int insertData(node *& current, node * previous, node *& inserting, int type);
         int remove(node *& current, char * title);

@@ -54,12 +54,12 @@ int main() {
             char * title = new char[100];
             string details;
 
-            cout << endl << "What is the title of the question?" << endl << YELLOW << ">> " << RESET;
+            cout << endl << "What is the title of the activity?" << endl << YELLOW << ">> " << RESET;
             cin.get(title, 100);
             cin.clear();
             cin.ignore(100, '\n');
 
-            cout << endl << "What are the details of the question?" << endl << YELLOW << ">> " << RESET;
+            cout << endl << "What are the details of the activity?" << endl << YELLOW << ">> " << RESET;
             cin >> details;
             cin.clear();
             cin.ignore(100, '\n');
@@ -78,6 +78,8 @@ int main() {
                 cout << "5: Other" << endl;
                 cout << YELLOW << ">> " << RESET;
                 cin >> type;
+                cin.clear();
+                cin.ignore(100, '\n');
                 if (type >= 5 || type < 0) type = 0;
 
                 cout << endl << "Please provide a sample question." << endl << YELLOW << ">> " << RESET;
@@ -105,7 +107,7 @@ int main() {
             else if (answer == 3) {//Study Concepts
                 int proficiency;
 
-                cout << endl << "How proficient are you at this concept?" << endl << YELLOW << ">> " << RESET;
+                cout << endl << "How proficient are you at this concept? (integer value) " << endl << YELLOW << ">> " << RESET;
                 cin >> proficiency;
                 cin.clear();
                 cin.ignore(100, '\n');
@@ -201,7 +203,7 @@ int main() {
                 }
 
             }
-            else if (answer == 2) {//Remove Single
+            else if (answer == 3) {//Remove Single
                 char * title = new char[100];
                 int type = -1;
                 int ret = -1;
@@ -280,7 +282,7 @@ int main() {
                 myActivity -> display();
                 if (answer == 0) {//exam prep
                     //should be able to mark as completed
-                    cout << endl << "Would you like to mark this as completed? (y/n)" << endl;
+                    cout << endl << "Would you like to mark this as completed? (y/n)" << RESET << endl;
                     cout << YELLOW << ">> ";
 
                     char yesno;
@@ -297,7 +299,7 @@ int main() {
                 else if (answer == 1) {//practice problem
                     //should be able to answer question
                     cout << endl << "Would you like to answer the question? (y/n)" << endl;
-                    cout << YELLOW << ">> ";
+                    cout << YELLOW << ">> " << RESET;
 
                     char yesno;
                     cin >> yesno;
@@ -330,7 +332,7 @@ int main() {
                     cout << endl << "Would you like to:" << endl;
                     cout << "1: Change Proficiency Level" << endl;
                     cout << "2: Edit Details" << endl;
-                    cout << "3: Mark as Completed" << endl << YELLOW << ">> " << RESET;
+                    cout << "3: Change Completion Status" << endl << YELLOW << ">> " << RESET;
 
                     cin >> answer;
                     cin.clear();
@@ -401,6 +403,8 @@ int main() {
 
         else cout << endl << RED << "Invalid Input." << RESET << endl;
     }
+
+    myActivities.removeAll();
 
     return 0;
 }

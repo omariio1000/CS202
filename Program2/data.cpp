@@ -71,7 +71,7 @@ void node::setPrevious(node * inPrevious) {
     return;
 }
 
-void node::display() const {
+void node::display() const {//tries to display and catches char* or string
     try {
         data -> display();
     }
@@ -91,6 +91,12 @@ bool node::compare(char * title) const {
 bool node::compare(const activity * comp) const {
     return data -> compare(comp);
 }
+
+/*void node::nullify() {
+    if (next) next = nullptr;
+    if (previous) previous = nullptr;
+    return;
+}*/
 
 ADLL::ADLL(int inTypes) {
     types = inTypes;
@@ -118,15 +124,12 @@ void ADLL::copyDLL(node *& dest, node * source, node * prev) {
 }
 
 ADLL::~ADLL() {
-    for (int i = 0; i < types; i++) {
-        if (questions[i]) delete questions[i];
-        questions[i] = nullptr;
-    }
+    removeAll();
     delete[] questions;
     questions = nullptr;
 }
 
-int ADLL::insertData(node *& inserting) {
+int ADLL::insertData(node *& inserting) {//throws activity class pointer
     activity * data = inserting -> getData();
 
     if (typeid(*data) == typeid(preparation))
@@ -151,7 +154,7 @@ int ADLL::insertData(node *& current, node * prev, node *& inserting, int type) 
     return insertData(current -> getNext(), current, inserting, type);
 }
 
-int ADLL::remove(char * title, int type) {
+int ADLL::remove(char * title, int type) {//throws incompatible char * or int
     if (!title) throw title;
     if (type < 0 || type > 2) throw type;
     return remove(questions[type], title);
@@ -161,14 +164,17 @@ int ADLL::remove(node *& current, char * title) {
     if (!current) return 0;
 
     if (current -> compare(title)) {
-        if (current -> getPrevious()) current -> getPrevious() -> setNext(current -> getNext());
-        if (current -> getNext()) current -> getNext() -> setPrevious(current -> getPrevious());
+        node * next = current -> getNext();
+        node * prev = current -> getPrevious();
 
-        current -> setPrevious(nullptr);
-        current -> setNext(nullptr);
+        if (next) next -> setPrevious(prev);
+
+        if (prev) prev -> setNext(next);
+
+        //current -> nullify();
 
         delete current;
-        current = nullptr;
+        current = next;
 
         return 1;
     }
@@ -176,13 +182,13 @@ int ADLL::remove(node *& current, char * title) {
     return remove(current -> getNext(), title);
 }
 
-activity *& ADLL::retrieve(char * title, int type) {
+activity *& ADLL::retrieve(char * title, int type) {//throws incompatible char* or int
     if (!title) throw title;
     if (type < 0 || type > 2) throw type;
     return retrieve(questions[type], title);
 }
 
-activity *& ADLL::retrieve(node * current, char * title) {
+activity *& ADLL::retrieve(node * current, char * title) {//throws empty node if nothing is found
     if (!current) throw current;
 
     if (current -> compare(title)) return current -> getData();
@@ -197,7 +203,7 @@ void ADLL::displayAll() const {
     return;
 }
 
-void ADLL::displayType(int type) const {
+void ADLL::displayType(int type) const {//throws int
     if (type < 0 || type > 2) throw type;
     displayType(questions[type]);
     return;
@@ -216,7 +222,7 @@ void ADLL::removeAll() {
     return;
 }
 
-void ADLL::removeType(int type) {
+void ADLL::removeType(int type) {//throws int
     if (type < 0 || type > 2) throw type;
     if (!questions[type]) return;
 

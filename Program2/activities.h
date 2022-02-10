@@ -18,15 +18,15 @@
 
 class activity {//Base class for activities/questions
     public:
-        virtual ~activity();//Virtual destructor because of virtual functions
+        virtual ~activity(); //Virtual destructor because of virtual functions
 
-        //Virtual functions eliminate need for dynamic cast
-        virtual void display() const;
-        int rateDifficulty(int difficulty);
-        bool compare(char * title) const;
-        bool compare(const activity * comp) const;
+        virtual void display() const; //virtual display so no dynamic cast needed
+        int rateDifficulty(int difficulty); //rating question difficulty
+        bool compare(char * title) const; //checking for retrieve and delete
+        bool compare(const activity * comp) const; //checking for retrieve and delete but with object
 
     protected:
+        //protected constructors so that only derived classes can use them
         activity();
         activity(char * title, std::string details);
         activity(const activity & activity);
@@ -38,6 +38,7 @@ class activity {//Base class for activities/questions
 
 class preparation : public activity {//Derived exam prep questions
     public:
+        //constructors and destructor
         preparation();
         preparation(char * title, std::string details, int type, char * sample);
         preparation(const preparation & prep);
@@ -56,6 +57,7 @@ class preparation : public activity {//Derived exam prep questions
 
 class problems : public activity {//Derived practice problems
     public: 
+        //constructors
         problems();
         problems(char * title, std::string details, std::string prototype); 
 
@@ -70,6 +72,7 @@ class problems : public activity {//Derived practice problems
 
 class concepts : public activity {//Derived concepts for future study
     public:
+        //constructors
         concepts();
         concepts(char * title, std::string details, int proficiency);
 

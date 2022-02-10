@@ -38,11 +38,11 @@ activity::activity(const activity & activity) {
 }
 
 activity::~activity() {
-    delete title;
+    if (title) delete title;
     title = nullptr;
 }
 
-void activity::display() const {
+void activity::display() const {//throws char * and string
     if (!title) throw title;
     if (details.empty()) throw details;
     
@@ -76,8 +76,6 @@ preparation::preparation(char * title, string details, int inType, char * inSamp
 
     sample = new char[strlen(inSample) + 1];
     strcpy(sample, inSample);
-
-    sample = nullptr;
 }
 
 preparation::preparation(const preparation & prep) : activity(prep) {
@@ -90,12 +88,12 @@ preparation::preparation(const preparation & prep) : activity(prep) {
     else sample = nullptr;
 }
 
-preparation::~preparation() {
-    delete sample;
+preparation::~preparation() {//virtual function because handles dynamic memory
+    if (sample) delete sample;
     sample = nullptr;
 }
 
-void preparation::display() const {
+void preparation::display() const {//virtual function
     cout << CYAN;
     activity::display();
 
@@ -137,10 +135,10 @@ problems::problems(char * inTitle, string inDetails, string inPrototype) : activ
     prototype = inPrototype;
 }
 
-void problems::display() const {
+void problems::display() const {//virtual function
     cout << GREEN;
     activity::display(); 
-    if (!prototype.empty()) cout << "Here's the prototype: " << endl;
+    if (!prototype.empty()) cout << "Here's the prototype: " << prototype << endl;
     if (!answer.empty()) cout << GREEN << "Here's the answer: " << RESET << endl;
     return;
 }
@@ -159,7 +157,7 @@ int problems::setData(char * inTitle, string inDetails, string inPrototype) {
     return 1;
 }
 
-int problems::answerQuestion(string inAnswer) {
+int problems::answerQuestion(string inAnswer) {//throws string
     if (inAnswer.empty()) throw inAnswer;
 
     if (!answer.empty()) answer.erase();
@@ -175,7 +173,7 @@ concepts::concepts(char * title, string details, int inProficiency) : activity(t
     proficiency = inProficiency;
 }
 
-void concepts::display() const {
+void concepts::display() const {//virtual function
     cout << MAGENTA;
     activity::display();
     if (proficiency >= 0) cout << "Your proficiency level: " << proficiency << endl;
@@ -198,14 +196,14 @@ int concepts::setData(char * inTitle, string inDetails, int inProficiency) {
     return 1;
 }
 
-int concepts::setProficiency(int inProficiency) {
+int concepts::setProficiency(int inProficiency) {//throws int
     if (inProficiency < 0) throw inProficiency;
 
     proficiency = inProficiency;
     return proficiency;
 }
 
-int concepts::editDetails(string inDetails) {
+int concepts::editDetails(string inDetails) {//throws string
     if (inDetails.empty()) throw inDetails;
     details = inDetails;
     return 1;
