@@ -19,12 +19,14 @@
 class olympics {//base class for olympic activities
     public:
         ~olympics();
-        int setData(char*, std::string, int, int, int[]);
+        int setData(char* name, std::string nation, int age, int weight, int height, int[] medals);
 
         olympics& operator = (const olympics&);
         
         bool operator == (const olympics&) const;
+        bool operator == (const char * name) const;
         bool operator != (const olympics&) const;
+        bool operator != (const char * name) const;
         //bool operator < (const olympics&) const;
         //bool operator <= (const olympics&) const;
         //bool operator > (const olympics&) const;
@@ -49,8 +51,8 @@ class ski : public olympics {//derived class for skiing
         ski();
         ski(const ski&);
 
-        int setData(char*, std::string, int, int, int, int[], int);
-        int setSponsor(std::string);
+        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, int time);
+        int setSponsor(std::string sponsor);
 
         ski& operator = (const ski&);
         
@@ -69,7 +71,7 @@ class board : public olympics {//derived class for snowboarding
         board();
         board(const ski&);
 
-        int setData(char*, std::string, int, int, int, int[], int);
+        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, int time);
         int setSponsor(std::string);
 
         board& operator = (const board&);
@@ -90,7 +92,7 @@ class hockey : public olympics {//derived class for hockey
         hockey();
         hockey(const hockey&);
 
-        int setData(char*, std::string, int, int, int, int[]);
+        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, std::string position);
         int setTeam(std::string);
 
         hockey& operator = (const hockey&);
