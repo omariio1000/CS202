@@ -12,6 +12,7 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <map>
 
 #include "data.h"
 #include "colors.h"
@@ -655,4 +656,196 @@ RBT& RBT::operator += (node* obj) {
     return *this;
 }
 
+data::data() {}
 
+data::~data() {
+    removeAll(false);
+    removeAll(true);
+}
+
+int data::insertData(olympics * data, int rank) {
+    if (!data) throw data;
+    if (typeid(data) == typeid(board*)) {
+        board * ptr = static_cast<board*> (data);
+        snowBoarders.insert(pair<int, board*>(rank, ptr));
+        return 0;
+    }
+    else if (typeid(data) == typeid(hockey*)) {
+        hockey * ptr = static_cast<hockey*> (data);
+        hockeyPlayers.insert(pair<int, hockey*>(rank, ptr));
+        return 1;
+    }
+    else throw data;
+}
+
+void data::displayAll(bool type) {
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            cout << m -> second;
+            cout << "Rank: " << m -> first << endl;
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            cout << m -> second;
+            cout << "Rank: " << m -> first << endl;
+        }
+    }
+}
+
+void data::displaySingle(int ranking, bool type) {
+    if (ranking < 1) throw ranking;
+    bool found = false;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (ranking == m -> first) {
+                found = true;
+                cout << m -> second;
+                cout << "Rank: " << m -> first << endl;
+            }
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            found = true;
+            if (ranking == m -> first) {
+                cout << m -> second;
+                cout << "Rank: " << m -> first << endl;
+            }
+
+        }
+    }
+    if (!found) cout << endl << RED << "No athlete was found with that name." << RESET << endl;
+}
+
+void data::displaySingle(char * name, bool type) {
+    if (!name) throw name;
+    bool found = false;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (*(m -> second) == name) {
+                found = true;
+                cout << m -> second;
+                cout << "Rank: " << m -> first << endl;
+            }
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            if (*(m -> second) == name) {
+                found = true;
+                cout << m -> second;
+                cout << "Rank: " << m -> first << endl;
+            }
+        }
+    }
+    if (!found) cout << endl << RED << "No athlete was found with that name." << RESET << endl;
+}
+
+olympics* data::retrieve (int ranking, bool type) {
+    if (ranking < 1) throw ranking;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (ranking == m -> first) return m -> second;
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            if (ranking == m -> first) return m -> second;
+        }
+    }
+    return nullptr;
+}
+
+
+olympics* data::retrieve (char * name, bool type) {
+    if (!name) throw name;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (*(m -> second) == name) return m -> second;
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            if (*(m -> second) == name) return m -> second;
+        }
+    }
+    return nullptr;
+}
+
+bool data::remove(int ranking, bool type) {
+    if (ranking < 1) throw ranking;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (m -> first == ranking) {
+                if (m -> second) delete m -> second;
+                snowBoarders.erase(m);
+                return true;
+            }
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            if (m -> first == ranking) {
+                if (m -> second) delete m -> second;
+                hockeyPlayers.erase(m);
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
+
+bool data::remove(char * name, bool type) {
+    if (!name) throw name;
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
+            if (*(m -> second) == name) {
+                if (m -> second) delete m -> second;
+                snowBoarders.erase(m);
+                return true;
+            }
+        }
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
+            if (*(m -> second) == name) {
+                if (m -> second) delete m -> second;
+                hockeyPlayers.erase(m);
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
+
+void data::removeAll(bool type) {
+    if (type) {//board
+        map<int, board*>::iterator m;
+        for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) 
+            if (m -> second) delete m -> second;
+        snowBoarders.clear();
+    }
+    else {//hockey
+        map<int, hockey*>::iterator m;
+        for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++)
+            if (m -> second) delete m -> second;
+        hockeyPlayers.clear();
+    }
+}

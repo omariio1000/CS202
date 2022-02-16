@@ -15,6 +15,7 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <map>
 
 #include "olympics.h"
 
@@ -130,22 +131,23 @@ class RBT {//red black tree class
 
 class data {//other data structures
     public:
-        //data();
+        data();
         //data(const data&);
-        //~data();
+        ~data();
 
-        int insertData(olympics * data);
-        int displayAll();
-        int displaySingle(int ranking, bool type);
-        int displaySingle(char * single, bool type);
+        int insertData(olympics * data, int rank);
+        void displayAll(bool type);
+        void displaySingle(int ranking, bool type);
+        void displaySingle(char * name, bool type);
         olympics * retrieve(int ranking, bool type);
         olympics * retrieve(char * name, bool type);
-        int remove(int ranking);
-        int remove(char * name);
+        bool remove(int ranking, bool type);
+        bool remove(char * name, bool type);
+        void removeAll(bool type);
 
     private:
-        std::vector<board*> snowboarders;
-        std::vector<hockey*> hockeyPlayers;
+        std::map<int, board*> snowBoarders;
+        std::map<int, hockey*> hockeyPlayers;
 };
 
 #endif
