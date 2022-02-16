@@ -19,9 +19,11 @@
 class olympics {//base class for olympic activities
     public:
         ~olympics();
-        int setData(char* name, std::string nation, int age, int weight, int height, int[] medals);
+        int setData(char* name, std::string nation, int age, int weight, int height, int medals[3]);
+        void displayVisual();
 
-        olympics& operator = (const olympics&);
+        //operators
+        olympics& operator = (olympics&);
         
         bool operator == (const olympics&) const;
         bool operator == (const char * name) const;
@@ -32,14 +34,18 @@ class olympics {//base class for olympic activities
         //bool operator > (const olympics&) const;
         //bool operator >= (const olympics&) const;
 
-        friend ostream& operator << (ostream&, const olympics&);
+        //friend std::ostream& operator << (std::ostream&, const olympics&);
+        
+        void print(std::ostream&);
 
     protected:
+        //protected constructors
         olympics();
         olympics(const olympics&);
 
+        //data members
         char * name;
-        string nation;
+        std::string nation;
         int age;
         int weight;
         int height;
@@ -51,15 +57,16 @@ class ski : public olympics {//derived class for skiing
         ski();
         ski(const ski&);
 
-        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, int time);
+        int setData(char * name, std::string nation, int age, int weight, int height, int medals[3], int time);
         int setSponsor(std::string sponsor);
 
-        ski& operator = (const ski&);
+        //operators
+        ski& operator = (ski&);
         
-        bool operator == (const ski&) const;
-        bool operator != (const ski&) const;
+        //bool operator == (const ski&) const;
+        //bool operator != (const ski&) const;
 
-        friend ostream& operator << (ostream&, const ski&);
+        friend std::ostream& operator << (std::ostream&, ski&);
 
     private:
         int time;
@@ -69,17 +76,18 @@ class ski : public olympics {//derived class for skiing
 class board : public olympics {//derived class for snowboarding
     public: 
         board();
-        board(const ski&);
+        board(const board&);
 
-        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, int time);
+        int setData(char * name, std::string nation, int age, int weight, int height, int medals[], int time);
         int setSponsor(std::string);
 
-        board& operator = (const board&);
+        //operators
+        board& operator = (board&);
 
-        bool operator == (const board&) const;
-        bool operator != (const board&) const;
+        //bool operator == (const board&) const;
+        //bool operator != (const board&) const;
 
-        friend ostream& operator << (ostream&, const board&);
+        friend std::ostream& operator << (std::ostream&, board&);
 
     private:
         int time;
@@ -92,15 +100,16 @@ class hockey : public olympics {//derived class for hockey
         hockey();
         hockey(const hockey&);
 
-        int setData(char * name, std::string nation, int age, int weight, int height, int[] medals, std::string position);
-        int setTeam(std::string);
+        int setData(char * name, std::string nation, int age, int weight, int height, int medals[3], std::string position);
+        int setTeam(std::string team);
 
-        hockey& operator = (const hockey&);
+        //operators
+        hockey& operator = (hockey&);
 
-        bool operator == (const hockey&) const;
-        bool operator != (const hockey&) const;
+        //bool operator == (const hockey&) const;
+        //bool operator != (const hockey&) const;
 
-        friend ostream& operator << (ostream&, const hockey&);
+        friend std::ostream& operator << (std::ostream&, hockey&);
 
     private:
         std::string team;
@@ -108,4 +117,4 @@ class hockey : public olympics {//derived class for hockey
 
 };
 
-#endif olympics_h
+#endif

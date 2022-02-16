@@ -20,13 +20,16 @@
 
 class node {
     public:
+        //constructors and destructors
         node();
-        node(node * parent);
-        node(ski * data);
+        node(node * parent, ski * data, int rank);
+        node(ski * data, int rank);
         node(const node&);
         ~node();
 
+        //getters and setters
         ski * getData();
+        int getRank();
         void setData(ski * data, int ranking);
 
         node *& getLeft();
@@ -38,17 +41,34 @@ class node {
         node *& getParent();
         void setParent(node * parent);
 
-        bool getState();
-        void setState(bool state);
+        //for red-black tree
+        bool getColor();
+        void setColor(bool color);
+
+        void displayVisual();
+        void swap(node * swapping);
+
+        //operators
+        node& operator = (const node&);
+        node& operator = (const bool color);
 
         bool operator == (const node&) const;
+        bool operator == (const int rank) const;
+        bool operator == (const bool color) const;
+        bool operator == (const char * name) const;
         bool operator != (const node&) const;
+        bool operator != (const int rank) const;
+        bool operator != (const bool color) const;
         bool operator < (const node&) const;
+        bool operator < (const int rank) const;
         bool operator <= (const node&) const;
+        bool operator <= (const int rank) const;
         bool operator > (const node&) const;
+        bool operator > (const int rank) const;
         bool operator >= (const node&) const;
+        bool operator >= (const int rank) const;
 
-        friend ostream& operator << (ostream&, const node&);
+        friend std::ostream& operator << (std::ostream&, node&);
 
     private:
         ski * data;
@@ -56,50 +76,76 @@ class node {
         node * left;
         node * right;
         node * parent;
-        bool redBlack();
+        bool red;
 };
 
-class RBT {
+//helper struct for visual display
+struct Trunk {
+    Trunk * prev;
+    char * str;
+
+    Trunk(Trunk * prev, char * str) {
+        this -> prev = prev;
+        this -> str = str;
+    }
+};
+
+class RBT {//red black tree class
     public:
         RBT();
         RBT(const RBT&);
         ~RBT();
 
         int insertData(node * inserting);
-        int balanceTree();
-        int displayAll();
-        int displaySingle(int ranking);
-        int displaySingle(char * name);
-        node *& retrieve(int ranking);
-        node *& retrieve(char * name);
-        int remove(int ranking);
-        int remove(char * name);
-        int copyTree();
+        int balanceTree(node * current);
+        void rotate(node * current, bool LR);
+        void displayAll();
+        void displaySingle(int ranking);
+        void displaySingle(char * name);
+        void visualDisplay();
+        node * retrieve(int ranking);
+        node * retrieve(char * name);
+        void remove(int ranking);
+        void remove(char * name);
+        void removeAll();
+        void copyTree(node * source);
+        void fixDouble(node * current);
 
-        RBT& operator += (node*&);
+        RBT& operator = (RBT&);
+        RBT& operator += (node*);
 
     private:
         node * root;
+
+        //will still implement recursive functions
+        int insertData(node * current, node * inserting, node * parent);
+        void displayAll(node * current);
+        node * retrieve(node * current, int ranking);
+        node * retrieve(node * current, char * name);
+        void visualDisplay(node * root, Trunk * prev, bool isLeft);
+        void removeAll(node * root);
+        void copyTree(node *& dest, node * source);
+        void remove(node * removing);
 };
 
-class data {
+class data {//other data structures
     public:
-        data();
-        data(const data&);
-        ~data();
+        //data();
+        //data(const data&);
+        //~data();
 
         int insertData(olympics * data);
         int displayAll();
-        int displaySingle(int ranking);
-        int displaySingle(char * single);
-        olympics *& retrieve(int ranking);
-        olympics *& retrieve(char * name);
+        int displaySingle(int ranking, bool type);
+        int displaySingle(char * single, bool type);
+        olympics * retrieve(int ranking, bool type);
+        olympics * retrieve(char * name, bool type);
         int remove(int ranking);
         int remove(char * name);
 
     private:
-        vector<board*> snowboarders;
-        vector<hockey*> hockeyPlayers;
-}
+        std::vector<board*> snowboarders;
+        std::vector<hockey*> hockeyPlayers;
+};
 
 #endif
