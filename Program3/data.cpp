@@ -656,6 +656,12 @@ RBT& RBT::operator += (node* obj) {
     return *this;
 }
 
+RBT RBT::operator + (node * obj) {
+    RBT ret(*this);
+    ret.insertData(obj);
+    return ret;
+}
+
 data::data() {}
 
 data::~data() {

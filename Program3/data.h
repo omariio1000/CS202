@@ -114,6 +114,7 @@ class RBT {//red black tree class
 
         RBT& operator = (RBT&);
         RBT& operator += (node*);
+        RBT operator + (node*);
 
     private:
         node * root;
