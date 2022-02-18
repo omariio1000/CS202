@@ -33,13 +33,13 @@ class node {
         int getRank();
         void setData(ski * data, int ranking);
 
-        node *& getLeft();
+        node * getLeft();
         void setLeft(node * left);
 
-        node *& getRight();
+        node * getRight();
         void setRight(node * right);
 
-        node *& getParent();
+        node * getParent();
         void setParent(node * parent);
 
         //for red-black tree
@@ -126,7 +126,7 @@ class RBT {//red black tree class
         node * retrieve(node * current, char * name);
         void visualDisplay(node * root, Trunk * prev, bool isLeft);
         void removeAll(node * root);
-        void copyTree(node *& dest, node * source);
+        void copyTree(node * dest, node * source);
         void remove(node * removing);
 };
 
@@ -137,7 +137,7 @@ class data {//other data structures
         ~data();
 
         int insertData(olympics * data, int rank);
-        void displayAll(bool type);
+        bool displayAll(bool type);
         void displaySingle(int ranking, bool type);
         void displaySingle(char * name, bool type);
         olympics * retrieve(int ranking, bool type);

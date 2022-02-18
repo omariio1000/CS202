@@ -46,13 +46,14 @@ olympics::~olympics() {
 }
 
 int olympics::setData(char * inName, string inNation, int inAge, int inWeight, int inHeight, int inMedals[3]) {
-    if (!inName) throw inName;
+    if (!inName || strcmp(inName, "") == 0) throw inName;
     if (inNation.empty()) throw inNation;
-    if (age < 10) return 1;
-    if (weight < 68) return 2;
-    if (height < 55) return 3;
-    if (medals[0] < 0 || medals[1] < 0 || medals[2] < 0) return 4;
+    if (inAge < 10) return 1;
+    if (inWeight < 68) return 2;
+    if (inHeight < 55) return 3;
+    if (inMedals[0] < 0 || inMedals[1] < 0 || inMedals[2] < 0) return 4;
     
+    if (name) delete name;
     name = new char[strlen(inName) + 1];
     strcpy(name, inName);
 
@@ -68,7 +69,7 @@ int olympics::setData(char * inName, string inNation, int inAge, int inWeight, i
 }
 
 void olympics::displayVisual() {
-    cout << name;
+    cout << name << endl;
 }
 
 olympics& olympics::operator = (olympics& obj) {
@@ -83,7 +84,7 @@ bool olympics::operator == (const olympics& obj) const {
 }
 
 bool olympics::operator == (const char * inName) const {
-    if (strcmp(name, inName)) return true;
+    if (strcmp(name, inName) == 0) return true;
     return false;
 }
 
@@ -107,7 +108,7 @@ bool olympics::operator != (const char * name) const {
 
 void olympics::print(ostream & out) {
     out << endl << "Name: " << name << " Nation: " << nation << endl;
-    out << "Weight: " << weight << " Height: " << floor(height/12) << "\' ";
+    out << "Weight: " << weight << " Height: " << floor(height/12) << "\'";
     if (height % 12 != 0) out << height % 12 << "\"";
     out << endl << "Golds: " << medals[0] << " Silvers: " << medals[1] << " Bronzes: " << medals[2] << endl;
     return;

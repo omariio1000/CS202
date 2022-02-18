@@ -18,7 +18,7 @@
 
 class olympics {//base class for olympic activities
     public:
-        ~olympics();
+        virtual ~olympics();
         int setData(char* name, std::string nation, int age, int weight, int height, int medals[3]);
         void displayVisual();
 

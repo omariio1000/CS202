@@ -86,7 +86,7 @@ void node::setData(ski * inData, int inRank) {
     return;
 }
 
-node*& node::getLeft() {
+node* node::getLeft() {
     return left;
 }
 
@@ -95,7 +95,7 @@ void node::setLeft(node * inLeft) {
     return;
 }
 
-node*& node::getRight() {
+node* node::getRight() {
     return right;
 }
 
@@ -104,7 +104,7 @@ void node::setRight(node * inRight) {
     return;
 }
 
-node*& node::getParent() {
+node* node::getParent() {
     return parent;
 }
 
@@ -123,7 +123,10 @@ void node::setColor(bool state) {
 }
 
 void node::displayVisual() {
-    return data -> displayVisual();
+    if (red) cout << RED;
+    data -> displayVisual();
+    cout << RESET;
+    return;
 }
 
 void node::swap(node * swapping) {
@@ -162,18 +165,18 @@ bool node::operator == (const node& obj) const {
 }
 
 bool node::operator == (const int rank) const {
-    if (this -> ranking == rank) return true;
+    if (ranking == rank) return true;
     return false;
 }
 
 bool node::operator == (const bool color) const {
-    if (this -> red == color) return true;
+    if (red == color) return true;
     return false;
 }
 
 bool node::operator == (const char * name) const {
     if (!name) return false;
-    if(*(this -> data) == name) return true;
+    if(*data == name) return true;
     return false;
 }
 
@@ -233,7 +236,8 @@ bool node::operator >= (const int rank) const {
 }
 
 ostream& operator << (ostream& out, node& obj) {
-    out << obj.getData();
+    out << *obj.getData();
+    out << "Rank: " << obj.ranking << endl;
     return out;
 }
 
@@ -252,6 +256,7 @@ RBT::~RBT() {
 
 int RBT::insertData(node * inserting) {
     if (!inserting) throw inserting;
+    if (inserting -> getRank() < 1) throw inserting -> getRank();
     if (!root) {
         root = inserting;
         root -> setColor(black);
@@ -264,12 +269,12 @@ int RBT::insertData(node * current, node * inserting, node * parent) {
     if (!current) {
         current = inserting;
         inserting -> setParent(parent);
-        if (current >= parent) parent -> setRight(current);
+        if (*current >= *parent) parent -> setRight(current);
         else parent -> setLeft(current);
         return balanceTree(current);
     }
 
-    if (inserting >= current) return insertData(current -> getRight(), inserting, current);
+    if (*inserting >= *current) return insertData(current -> getRight(), inserting, current);
     return insertData(current -> getLeft(), inserting, current);
 }
 
@@ -281,7 +286,7 @@ int RBT::balanceTree(node * current) {
         parent = current -> getParent();
         grandparent = parent -> getParent();
 
-        if (parent < grandparent) {//parent is a left child
+        if (*parent < *grandparent) {//parent is a left child
             node * uncle = grandparent -> getRight();
             
             if (uncle && *uncle == red) {//uncle is red
@@ -292,7 +297,7 @@ int RBT::balanceTree(node * current) {
             }
 
             else {//uncle either nonexistent or black
-                if (current > parent) {//current is a right child
+                if (*current >= *parent) {//current is a right child
                     rotate(parent, true);
                     current = parent;
                     parent = current -> getParent();
@@ -315,7 +320,7 @@ int RBT::balanceTree(node * current) {
             }
 
             else {//uncle either nonexistent or black
-                if (current < parent) {//current is a left child
+                if (*current < *parent) {//current is a left child
                     rotate(parent, false);
                     current = parent;
                     parent = current -> getParent();
@@ -339,7 +344,7 @@ void RBT::rotate(node * current, bool LR) {//true is left, false is right
         if (current == root) root = right;
 
         if (current -> getParent()) {
-            if (current < current -> getParent()) current -> getParent() -> setLeft(right);
+            if (*current < *(current -> getParent())) current -> getParent() -> setLeft(right);
             else current -> getParent() -> setRight(right);
         }
 
@@ -357,7 +362,7 @@ void RBT::rotate(node * current, bool LR) {//true is left, false is right
         if (current == root) root = left;
 
         if (current -> getParent()) {
-            if (current < current -> getParent()) current -> getParent() -> setLeft(left);
+            if (*current < *(current -> getParent())) current -> getParent() -> setLeft(left);
             else current -> getParent() -> setRight(left);
         }
 
@@ -380,9 +385,10 @@ void RBT::displayAll() {
 
 void RBT::displayAll(node * current) {
     if (!current) return;
-    return displayAll(current -> getLeft());
-    cout << current;
-    return displayAll(current -> getRight());
+    displayAll(current -> getLeft());
+    cout << *current;
+    displayAll(current -> getRight());
+    return;
 }
 
 node* RBT::retrieve(int rank) {
@@ -420,28 +426,31 @@ node* RBT::retrieve(node * current, char * name) {
 void RBT::displaySingle(int ranking) {
     node * displaying = retrieve(ranking);
     if (!displaying) throw displaying;
-    cout << displaying;
+    cout << *displaying;
 }
 
 void RBT::displaySingle(char * name) {
     node * displaying = retrieve(name);
     if (!displaying) throw displaying;
-    cout << displaying;
+    cout << *displaying;
 }
 
 void RBT::visualDisplay() {
-    return visualDisplay(root, nullptr, false);
+    if (!root) throw root;
+    cout << endl;
+    visualDisplay(root, nullptr, false);
+    cout << endl;
+    return;
 }
 
 //helper function for visual printing
-int showTrunks(Trunk * p) {
-    if (p == NULL)
-        return 0;
+void showTrunks(Trunk * p) {
+    if (!p) return;
 
     showTrunks(p -> prev);
 
     cout << p -> str;
-    return 1;
+    return;
 }
 
 //taken from my old BST program from high school
@@ -470,10 +479,10 @@ void RBT::visualDisplay(node * root, Trunk * prev, bool isLeft) {
     trunk -> str = (char *)("   |");
     visualDisplay(root -> getRight(), trunk, false);
     delete trunk;
-    return;
 }
 
 void RBT::remove(int rank) {
+    if (rank < 1) throw rank;
     node * removing = retrieve(rank);
     if (!removing) throw removing;
     return remove(removing);
@@ -487,7 +496,7 @@ void RBT::remove(char * name) {
 } 
 
 //finding inorder successor and shifting data
-node * inOrderSuccessor(node *& root) {
+node * inOrderSuccessor(node * root) {
     if (!root -> getLeft()) {//furthest to the left on subtree
         return root;
     }
@@ -505,7 +514,7 @@ void RBT::fixDouble(node * current) {
     node * parent = current -> getParent();
     bool LR;
 
-    if (current > parent) {
+    if (*current > *parent) {
         sibling = parent -> getLeft();
         LR = false;
     }
@@ -525,7 +534,7 @@ void RBT::fixDouble(node * current) {
         else {
             if (hasRed(sibling)) {
                 if (sibling -> getLeft() && *(sibling -> getLeft()) == red) {
-                    if (sibling < parent) {
+                    if (*sibling < *parent) {
                         *(sibling -> getLeft()) = sibling -> getColor();
                         *sibling = parent -> getColor();
                         rotate(parent, false);
@@ -537,7 +546,7 @@ void RBT::fixDouble(node * current) {
                     }
                 }
                 else {
-                    if (sibling < parent) {
+                    if (*sibling < *parent) {
                         *(sibling -> getRight()) = parent -> getColor();
                         rotate(sibling, true);
                         rotate(parent, false);
@@ -573,12 +582,15 @@ void RBT::remove(node * removing) {
     if (!temp) {
         if (*removing == black) fixDouble(removing);
         else {
-            if (removing > parent && parent -> getLeft()) *(removing -> getLeft()) = red;
-            else if (removing < parent && parent -> getRight()) *(removing -> getRight()) = red;
+            if (*removing >= *parent && parent -> getLeft()) *(parent -> getLeft()) = red;
+            else if (parent -> getRight()) *(parent -> getRight()) = red;
         }
 
         removing -> setLeft(nullptr);
         removing -> setRight(nullptr);
+        if (removing == removing -> getParent() -> getRight()) removing -> getParent() -> setRight(nullptr);
+        else if (removing == removing -> getParent() -> getLeft()) removing -> getParent() -> setLeft(nullptr);
+        removing -> setParent(nullptr);
         delete removing;
         removing = nullptr;
         return;
@@ -595,15 +607,25 @@ void RBT::remove(node * removing) {
             }
             temp -> setLeft(nullptr);
             temp -> setRight(nullptr);
+            if (temp == temp -> getParent() -> getRight()) temp -> getParent() -> setRight(nullptr);
+            else if (temp == temp -> getParent() -> getLeft()) temp -> getParent() -> setLeft(nullptr);
+            temp -> setParent(nullptr);
             delete temp;
+            temp = nullptr;
         }
         else {
-            if (removing < parent) parent -> setLeft(temp);
+            if (*removing < *parent) parent -> setLeft(temp);
             else parent -> setRight(temp);
 
             removing -> setLeft(nullptr);
             removing -> setRight(nullptr);
+
+            if (removing == removing -> getParent() -> getRight()) removing -> getParent() -> setRight(nullptr);
+            else if (removing == removing -> getParent() -> getLeft()) removing -> getParent() -> setLeft(nullptr);
+            removing -> setParent(nullptr);
+            
             delete removing;
+            removing = nullptr;
 
             temp -> setParent(parent);
             if (doubleBlack) fixDouble(temp);
@@ -638,7 +660,7 @@ void RBT::copyTree(node * source) {
     return copyTree(root, source);
 }
 
-void RBT::copyTree(node *& dest, node * source) {
+void RBT::copyTree(node * dest, node * source) {
     if (!source) return;
     dest = new node(*source);
     copyTree(dest -> getLeft(), source -> getLeft());
@@ -671,12 +693,12 @@ data::~data() {
 
 int data::insertData(olympics * data, int rank) {
     if (!data) throw data;
-    if (typeid(data) == typeid(board*)) {
+    if (typeid(*data) == typeid(board)) {
         board * ptr = static_cast<board*> (data);
         snowBoarders.insert(pair<int, board*>(rank, ptr));
         return 0;
     }
-    else if (typeid(data) == typeid(hockey*)) {
+    else if (typeid(*data) == typeid(hockey)) {
         hockey * ptr = static_cast<hockey*> (data);
         hockeyPlayers.insert(pair<int, hockey*>(rank, ptr));
         return 1;
@@ -684,21 +706,25 @@ int data::insertData(olympics * data, int rank) {
     else throw data;
 }
 
-void data::displayAll(bool type) {
+bool data::displayAll(bool type) {
+    bool something = false;
     if (type) {//board
         map<int, board*>::iterator m;
         for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
-            cout << m -> second;
+            something = true;
+            cout << *(m -> second);
             cout << "Rank: " << m -> first << endl;
         }
     }
     else {//hockey
         map<int, hockey*>::iterator m;
         for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
-            cout << m -> second;
+            something = true;
+            cout << *(m -> second);
             cout << "Rank: " << m -> first << endl;
         }
     }
+    return something;
 }
 
 void data::displaySingle(int ranking, bool type) {
@@ -709,7 +735,7 @@ void data::displaySingle(int ranking, bool type) {
         for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
             if (ranking == m -> first) {
                 found = true;
-                cout << m -> second;
+                cout << *(m -> second);
                 cout << "Rank: " << m -> first << endl;
             }
         }
@@ -719,13 +745,13 @@ void data::displaySingle(int ranking, bool type) {
         for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
             found = true;
             if (ranking == m -> first) {
-                cout << m -> second;
+                cout << *(m -> second);
                 cout << "Rank: " << m -> first << endl;
             }
 
         }
     }
-    if (!found) cout << endl << RED << "No athlete was found with that name." << RESET << endl;
+    if (!found) throw type;
 }
 
 void data::displaySingle(char * name, bool type) {
@@ -736,7 +762,7 @@ void data::displaySingle(char * name, bool type) {
         for (m = snowBoarders.begin(); m != snowBoarders.end(); m++) {
             if (*(m -> second) == name) {
                 found = true;
-                cout << m -> second;
+                cout << *(m -> second);
                 cout << "Rank: " << m -> first << endl;
             }
         }
@@ -746,7 +772,7 @@ void data::displaySingle(char * name, bool type) {
         for (m = hockeyPlayers.begin(); m != hockeyPlayers.end(); m++) {
             if (*(m -> second) == name) {
                 found = true;
-                cout << m -> second;
+                cout << *(m -> second);
                 cout << "Rank: " << m -> first << endl;
             }
         }
