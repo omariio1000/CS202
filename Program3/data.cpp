@@ -60,12 +60,12 @@ node::node(const node& obj) {
 
 node::~node() {
     if (data) delete data;
-    if (left) delete left;
-    if (right) delete right;
+    //if (left) delete left;
+    //if (right) delete right;
 
     data = nullptr;
-    left = nullptr;
-    right = nullptr;
+    //left = nullptr;
+    //right = nullptr;
 }
 
 ski* node::getData() {
@@ -90,12 +90,20 @@ node* node::getLeft() {
     return left;
 }
 
+node*& node::getLeftR() {
+    return left;
+}
+
 void node::setLeft(node * inLeft) {
     left = inLeft;
     return;
 }
 
 node* node::getRight() {
+    return right;
+}
+
+node*& node::getRightR() {
     return right;
 }
 
@@ -250,7 +258,7 @@ RBT::RBT(const RBT& obj) {
 }
 
 RBT::~RBT() {
-    removeAll();
+    if (root) removeAll();
     root = nullptr;
 }
 
@@ -643,13 +651,13 @@ void RBT::remove(node * removing) {
 
 void RBT::removeAll() {
     if (!root) return;
-    return removeAll(root);
+    removeAll(root);
 }
 
-void RBT::removeAll(node * root) {
+void RBT::removeAll(node *& root) {
     if (!root) return;
-    removeAll(root -> getLeft());
-    removeAll(root -> getRight());
+    removeAll(root -> getLeftR());
+    removeAll(root -> getRightR());
     delete root;
     root = nullptr;
 }

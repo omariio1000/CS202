@@ -41,7 +41,7 @@ olympics::olympics(const olympics & obj) {
 }
 
 olympics::~olympics() {
-    if (name) delete name;
+    if (name) delete[] name;
     name = nullptr;
 }
 
@@ -53,7 +53,7 @@ int olympics::setData(char * inName, string inNation, int inAge, int inWeight, i
     if (inHeight < 55) return 3;
     if (inMedals[0] < 0 || inMedals[1] < 0 || inMedals[2] < 0) return 4;
     
-    if (name) delete name;
+    if (name) delete[] name;
     name = new char[strlen(inName) + 1];
     strcpy(name, inName);
 
@@ -108,7 +108,7 @@ bool olympics::operator != (const char * name) const {
 
 void olympics::print(ostream & out) {
     out << endl << "Name: " << name << " Nation: " << nation << endl;
-    out << "Weight: " << weight << " Height: " << floor(height/12) << "\'";
+    out << "Age: " << age << " Weight: " << weight << " Height: " << floor(height/12) << "\'";
     if (height % 12 != 0) out << height % 12 << "\"";
     out << endl << "Golds: " << medals[0] << " Silvers: " << medals[1] << " Bronzes: " << medals[2] << endl;
     return;

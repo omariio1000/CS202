@@ -235,7 +235,7 @@ int main() {
             else if (ret == 4) cout << RED << endl << "Negative medals???" << RESET << endl;
 
 
-            if (name) delete name;
+            if (name) delete[] name;
         }
 
         else if (answer == 2) {//display
@@ -332,7 +332,7 @@ int main() {
                         catch (node*) {
                             cout << endl << RED << "Nobody found with that name!" << RESET << endl;
                         }
-                        if (name) delete name;
+                        if (name) delete[] name;
                     }
                     else cout << RED << endl << "Invalid Input." << RESET << endl;
                 }
@@ -391,7 +391,7 @@ int main() {
                         catch (int) {
                             cout << endl << RED << "Name can't be empty!" << RESET << endl;
                         }
-                        if (name) delete name;
+                        if (name) delete[] name;
                     }
                     else cout << RED << endl << "Invalid Input." << RESET << endl;
                 }
@@ -450,7 +450,7 @@ int main() {
                         catch (int) {
                             cout << endl << RED << "Name can't be empty!" << RESET << endl;
                         }
-                        if (name) delete name;
+                        if (name) delete[] name;
                     }
                     else cout << RED << endl << "Invalid Input." << RESET << endl;
                 }

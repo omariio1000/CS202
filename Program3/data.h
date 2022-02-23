@@ -34,9 +34,11 @@ class node {
         void setData(ski * data, int ranking);
 
         node * getLeft();
+        node *& getLeftR();
         void setLeft(node * left);
 
         node * getRight();
+        node *& getRightR();
         void setRight(node * right);
 
         node * getParent();
@@ -125,7 +127,7 @@ class RBT {//red black tree class
         node * retrieve(node * current, int ranking);
         node * retrieve(node * current, char * name);
         void visualDisplay(node * root, Trunk * prev, bool isLeft);
-        void removeAll(node * root);
+        void removeAll(node *& root);
         void copyTree(node * dest, node * source);
         void remove(node * removing);
 };
