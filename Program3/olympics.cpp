@@ -45,7 +45,7 @@ olympics::~olympics() {
     name = nullptr;
 }
 
-int olympics::setData(char * inName, string inNation, int inAge, int inWeight, int inHeight, int inMedals[3]) {
+int olympics::setData(char * inName, string inNation, int inAge, int inWeight, int inHeight, int inMedals[]) {
     if (!inName || strcmp(inName, "") == 0) throw inName;
     if (inNation.empty()) throw inNation;
     if (inAge < 10) return 1;
@@ -72,9 +72,20 @@ void olympics::displayVisual() {
     cout << name << endl;
 }
 
-olympics& olympics::operator = (olympics& obj) {
+olympics& olympics::operator = (const olympics& obj) {
     if (*this == obj) return *this;
-    this -> setData(obj.name, obj.nation, obj.age, obj.weight, obj.height, obj.medals);
+    name = new char[strlen(obj.name) + 1];
+    strcpy(name, obj.name);
+
+    nation = obj.nation;
+    age = obj.age;
+    weight = obj.weight;
+    height = obj.height;
+
+    for (int i = 0; i < 3; i++) {
+        medals[i] = obj.medals[i];
+    }
+
     return *this;
 }
 
@@ -99,12 +110,12 @@ bool olympics::operator != (const char * name) const {
 }
 
 /*ostream& operator << (ostream& out, const olympics& obj) {
-    out << endl << "Name: " << obj.name << " Nation: " << obj.nation << endl;
-    out << "Weight: " << obj.weight << " Height: " << floor(obj.height/12) << "\' ";
-    if (obj.height % 12 != 0) out << obj.height % 12 << "\"";
-    out << endl << "Golds: " << obj.medals[0] << " Silvers: " << obj.medals[1] << " Bronzes: " << obj.medals[2] << endl;
-    return out;
-}*/
+  out << endl << "Name: " << obj.name << " Nation: " << obj.nation << endl;
+  out << "Weight: " << obj.weight << " Height: " << floor(obj.height/12) << "\' ";
+  if (obj.height % 12 != 0) out << obj.height % 12 << "\"";
+  out << endl << "Golds: " << obj.medals[0] << " Silvers: " << obj.medals[1] << " Bronzes: " << obj.medals[2] << endl;
+  return out;
+  }*/
 
 void olympics::print(ostream & out) {
     out << endl << "Name: " << name << " Nation: " << nation << endl;
@@ -121,7 +132,7 @@ ski::ski(const ski& obj) : olympics(obj) {
     sponsor = obj.sponsor;
 }
 
-int ski::setData(char * name, string nation, int age, int weight, int height, int medals[3], int inTime) {
+int ski::setData(char * name, string nation, int age, int weight, int height, int medals[], int inTime) {
     time = inTime;
     return olympics::setData(name, nation, age, weight, height, medals);
 }
@@ -132,9 +143,9 @@ int ski::setSponsor(string inSponsor) {
     return 0;
 }
 
-ski& ski::operator = (ski& obj) {
+ski& ski::operator = (const ski& obj) {
     if (*this == obj) return *this;
-    this -> setData(obj.name, obj.nation, obj.age, obj.weight, obj.height, obj.medals, obj.time);
+    this -> olympics::operator = (obj);
     sponsor = obj.sponsor;
     return *this;
 }
@@ -153,7 +164,7 @@ board::board(const board& obj) : olympics(obj) {
     sponsor = obj.sponsor;
 }
 
-int board::setData(char * name, string nation, int age, int weight, int height, int medals[3], int inTime) {
+int board::setData(char * name, string nation, int age, int weight, int height, int medals[], int inTime) {
     time = inTime;
     return olympics::setData(name, nation, age, weight, height, medals);
 }
@@ -164,9 +175,9 @@ int board::setSponsor(string inSponsor) {
     return 0;
 } 
 
-board& board::operator = (board& obj) {
+board& board::operator = (const board& obj) {
     if (*this == obj) return *this;
-    this -> setData(obj.name, obj.nation, obj.age, obj.weight, obj.height, obj.medals, obj.time);
+    this -> olympics::operator = (obj);
     sponsor = obj.sponsor;
     return *this;
 }
@@ -185,7 +196,7 @@ hockey::hockey(const hockey& obj) : olympics(obj) {
     position = obj.position;
 }
 
-int hockey::setData(char * name, string nation, int age, int weight, int height, int medals[3], string inPosition) {
+int hockey::setData(char * name, string nation, int age, int weight, int height, int medals[], string inPosition) {
     position = inPosition;
     return olympics::setData(name, nation, age, weight, height, medals);
 }
@@ -196,9 +207,9 @@ int hockey::setTeam(string inTeam) {
     return 0;
 }
 
-hockey& hockey::operator = (hockey& obj) {
+hockey& hockey::operator = (const hockey& obj) {
     if (*this == obj) return *this;
-    this -> setData(obj.name, obj.nation, obj.age, obj.weight, obj.height, obj.medals, obj.position);
+    this -> olympics::operator = (obj);
     team = obj.team;
     return *this;
 }

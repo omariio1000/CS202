@@ -19,11 +19,11 @@
 class olympics {//base class for olympic activities
     public:
         virtual ~olympics();
-        int setData(char* name, std::string nation, int age, int weight, int height, int medals[3]);
+        int setData(char* name, std::string nation, int age, int weight, int height, int medals[]);
         void displayVisual();
 
         //operators
-        olympics& operator = (olympics&);
+        olympics& operator = (const olympics&);
         
         bool operator == (const olympics&) const;
         bool operator == (const char * name) const;
@@ -36,6 +36,7 @@ class olympics {//base class for olympic activities
 
         //friend std::ostream& operator << (std::ostream&, const olympics&);
         
+        //print function for base class
         void print(std::ostream&);
 
     protected:
@@ -57,11 +58,11 @@ class ski : public olympics {//derived class for skiing
         ski();
         ski(const ski&);
 
-        int setData(char * name, std::string nation, int age, int weight, int height, int medals[3], int time);
+        int setData(char * name, std::string nation, int age, int weight, int height, int medals[], int time);
         int setSponsor(std::string sponsor);
 
         //operators
-        ski& operator = (ski&);
+        ski& operator = (const ski&);
         
         //bool operator == (const ski&) const;
         //bool operator != (const ski&) const;
@@ -82,7 +83,7 @@ class board : public olympics {//derived class for snowboarding
         int setSponsor(std::string);
 
         //operators
-        board& operator = (board&);
+        board& operator = (const board&);
 
         //bool operator == (const board&) const;
         //bool operator != (const board&) const;
@@ -100,11 +101,11 @@ class hockey : public olympics {//derived class for hockey
         hockey();
         hockey(const hockey&);
 
-        int setData(char * name, std::string nation, int age, int weight, int height, int medals[3], std::string position);
+        int setData(char * name, std::string nation, int age, int weight, int height, int medals[], std::string position);
         int setTeam(std::string team);
 
         //operators
-        hockey& operator = (hockey&);
+        hockey& operator = (const hockey&);
 
         //bool operator == (const hockey&) const;
         //bool operator != (const hockey&) const;

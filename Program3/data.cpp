@@ -20,6 +20,7 @@
 using namespace std;
 using namespace colors;
 
+//just to remember which color is true or false and make code easier to read
 static bool black = false;
 static bool red = true;
 
@@ -277,6 +278,7 @@ int RBT::insertData(node * current, node * inserting, node * parent) {
     if (!current) {
         current = inserting;
         inserting -> setParent(parent);
+        //using relational ops to compare instead of needing to get data every time
         if (*current >= *parent) parent -> setRight(current);
         else parent -> setLeft(current);
         return balanceTree(current);
@@ -286,7 +288,7 @@ int RBT::insertData(node * current, node * inserting, node * parent) {
     return insertData(current -> getLeft(), inserting, current);
 }
 
-int RBT::balanceTree(node * current) {
+int RBT::balanceTree(node * current) {//function to rebalance after tree is added
     node * parent = current -> getParent();
     node * grandparent = nullptr;
 
@@ -391,7 +393,7 @@ void RBT::displayAll() {
     return displayAll(root);
 }
 
-void RBT::displayAll(node * current) {
+void RBT::displayAll(node * current) {//inorder display all function
     if (!current) return;
     displayAll(current -> getLeft());
     cout << *current;
@@ -461,8 +463,8 @@ void showTrunks(Trunk * p) {
     return;
 }
 
-//taken from my old BST program from high school
-//https://github.com/omariio1000/CS163/tree/master/BST
+//adapted from my old RBT program from high school
+//https://github.com/omariio1000/CS163/tree/master/RBT
 void RBT::visualDisplay(node * root, Trunk * prev, bool isLeft) {
     if (!root) return;
 
@@ -594,6 +596,7 @@ void RBT::remove(node * removing) {
             else if (parent -> getRight()) *(parent -> getRight()) = red;
         }
 
+        //could tidy up if I used reference instead of pointer, but this works
         removing -> setLeft(nullptr);
         removing -> setRight(nullptr);
         if (removing == removing -> getParent() -> getRight()) removing -> getParent() -> setRight(nullptr);
@@ -654,7 +657,7 @@ void RBT::removeAll() {
     removeAll(root);
 }
 
-void RBT::removeAll(node *& root) {
+void RBT::removeAll(node *& root) {//same as BST remove all
     if (!root) return;
     removeAll(root -> getLeftR());
     removeAll(root -> getRightR());
@@ -668,7 +671,7 @@ void RBT::copyTree(node * source) {
     return copyTree(root, source);
 }
 
-void RBT::copyTree(node * dest, node * source) {
+void RBT::copyTree(node * dest, node * source) {//same as BST copy all
     if (!source) return;
     dest = new node(*source);
     copyTree(dest -> getLeft(), source -> getLeft());
@@ -676,7 +679,7 @@ void RBT::copyTree(node * dest, node * source) {
     return;
 }
 
-RBT& RBT::operator = (RBT& obj) {
+RBT& RBT::operator = (const RBT& obj) {
     copyTree(obj.root);
     return *this;
 }

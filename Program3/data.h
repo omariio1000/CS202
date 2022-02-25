@@ -114,14 +114,14 @@ class RBT {//red black tree class
         void copyTree(node * source);
         void fixDouble(node * current);
 
-        RBT& operator = (RBT&);
+        RBT& operator = (const RBT&);
         RBT& operator += (node*);
         RBT operator + (node*);
 
     private:
         node * root;
 
-        //will still implement recursive functions
+        //recursive functions
         int insertData(node * current, node * inserting, node * parent);
         void displayAll(node * current);
         node * retrieve(node * current, int ranking);
