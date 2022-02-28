@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import java.util.*;
+
 
 public class Lab7 {
 
@@ -21,7 +21,6 @@ public class Lab7 {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new Lab7();
 	}
 
