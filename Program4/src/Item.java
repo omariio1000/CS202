@@ -1,4 +1,4 @@
-public class Item {
+abstract class Item {
     Item() {
         this.name = null;
         this.price = 0;
@@ -10,7 +10,8 @@ public class Item {
     }
 
     public void display() {
-        System.out.println(this.name + " - $" + "%.2f" + price);
+        System.out.printf(this.name + " - $" + "%.2f", price);
+        System.out.println();
     }
 
     //data members

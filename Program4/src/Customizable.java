@@ -9,6 +9,12 @@ public class Customizable extends Item {
         extraToppings = new HashMap<String, Float>();
     }
 
+    Customizable(String name, float price) {
+        super(name, price);
+        freeToppings = new ArrayList<String>();
+        extraToppings = new HashMap<String, Float>();
+    }
+
     Customizable(String name, float price, ArrayList<String> freeToppings, HashMap<String, Float> extraToppings) {
         super(name, price);
         this.freeToppings = freeToppings;
@@ -25,15 +31,16 @@ public class Customizable extends Item {
 
     public void display() {
         super.display();
-        System.out.println("\nFree Toppings: ");
+        System.out.print("\tFree Toppings: ");
         for (int i = 0; i < this.freeToppings.size(); i++) {
             System.out.print(this.freeToppings.get(i));
             if (i != this.freeToppings.size() - 1) System.out.print(", ");
         }
-
-        System.out.println("\nOther Toppings:");
+        System.out.println();
+        System.out.println("\tOther Toppings:");
         for (Map.Entry<String, Float> topping : this.extraToppings.entrySet()) {
-            System.out.println(topping.getKey() + " - $" + "%.2f" + topping.getValue());
+            System.out.printf("\t\t" + topping.getKey() + " - $" + "%.2f", topping.getValue());
+            System.out.println();
         } 
     }
 
