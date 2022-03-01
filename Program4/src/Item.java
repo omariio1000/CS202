@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * February 28, 2022
+ * Abstract food item class
+ */
+
 abstract class Item {
     Item() {
         this.name = null;

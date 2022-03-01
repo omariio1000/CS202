@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+/* Omar Nassar
+ * Portland State University CS202
+ * February 28, 2022
+ * Customizable food item derived class
+ */
+
 public class Customizable extends Item {
     Customizable() {
         super();

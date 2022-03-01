@@ -1,3 +1,9 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * February 28, 2022
+ * node class that stores food items, used for both menu and cart
+ */
+
 public class node {
 	
     node() {

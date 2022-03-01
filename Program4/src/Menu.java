@@ -1,3 +1,16 @@
+/*import javax.swing.JFrame;
+import javax.swing.JList;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;*/
+
+/* Omar Nassar
+ * Portland State University CS202
+ * February 28, 2022
+ * Menu Class
+ */
+
 public class Menu {
 	public Menu() {
 		this.name = null;
@@ -35,6 +48,30 @@ public class Menu {
 		displaying.display();
 		displayItems(displaying.getNext());
 	}
+
+	/*public void visualDisplay() {
+		JFrame visualMenu = new JFrame(this.name);
+		visualMenu.setSize(500, 500);
+		visualMenu.setLayout(new BorderLayout());
+		Container shopDetails = new Container();
+		Container items = new Container();
+		Container itemNames = new Container();
+		Container itemDetails = new Container();
+
+		items.setLayout(new BorderLayout());
+		shopDetails.setLayout(new GridLayout());
+		itemNames.setLayout(new GridLayout());
+		itemDetails.setLayout(new GridLayout());
+
+		JList itemJList = new JList<Item>();
+		node allItems = itemList;
+		while (allItems != null) {
+			itemJList.addElement(allItems.getItem());
+			allItems = allItems.getNext();
+		}
+
+		visualMenu.setVisible(true);
+	}*/
 
 	public void setDetails(String name, String cuisine, String address, String hours, int priceRange, int rating) {
 		this.name = name;

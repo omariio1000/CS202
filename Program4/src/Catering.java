@@ -1,3 +1,8 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * February 28, 2022
+ * Foods that can be ordered in bulk
+ */
 
 public class Catering extends Item {
     

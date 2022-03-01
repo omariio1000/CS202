@@ -4,7 +4,7 @@
  * Food ordering application with different types of menus
  */
 
-public class Main {
+public class Main  {
 
 	private Main() {
 		Spice tikka = new Spice("Tikka", (float) 12.50, 5);
@@ -18,6 +18,7 @@ public class Main {
 		bollywood.insertItem(tikka);
 		bollywood.insertItem(pizza);
 		bollywood.display();
+
 	}
 	
 	public static void main(String[] args) {
