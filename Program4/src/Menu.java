@@ -98,7 +98,13 @@ public class Menu {
 
 	public node retrieveItem(String name) {
 		if (this.itemList == null) return this.itemList;
-		return null;
+		return retrieveItem(this.itemList, name);
+	}
+
+	public node retrieveItem(node head, String name) {
+		if (head == null) return head;
+		if (head.getItem().compareName(name)) return head;
+		return retrieveItem(head.getNext(), name);
 	}
 
 
