@@ -84,16 +84,21 @@ public class Menu {
 
 	public void insertItem(Item inserting) {
 		if (inserting == null) return;
-		this.itemList = insertItem(itemList, inserting);
+		this.itemList = insertItem(this.itemList, inserting);
 	}
 
-	public node insertItem(node head, Item inserting) {
+	private node insertItem(node head, Item inserting) {
 		if (head == null) {
 			head = new node(inserting);
 			return head;
 		}
 		head.setNext(insertItem(head.getNext(), inserting));
 		return head;
+	}
+
+	public node retrieveItem(String name) {
+		if (this.itemList == null) return this.itemList;
+		return null;
 	}
 
 

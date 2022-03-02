@@ -15,9 +15,27 @@ abstract class Item {
         this.price = price;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public boolean compareName(String name) {
+        if (this.name.equals(name)) return true;
+        return false;
+    }
+
     public void display() {
-        System.out.printf(this.name + " - $" + "%.2f", price);
+        System.out.printf("\n" + this.name + " - $" + "%.2f", price);
         System.out.println();
+    }
+
+    abstract void displayCart();
+
+    public void copy(Item copying) {
+        if (copying instanceof Customizable) ((Customizable) this).copyItem(((Customizable) copying));
+        else if (copying instanceof Spice) ((Spice) this).copyItem(((Spice) copying));
+        else if (copying instanceof Catering) ((Catering) this).copyItem(((Catering) copying));
+        else return;
     }
 
     //data members

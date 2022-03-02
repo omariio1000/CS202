@@ -34,6 +34,10 @@ public class node {
         this.item.display();
     }
 
+    public void displayCart() {
+        this.item.displayCart();
+    }
+
     //data members
     protected Item item;
     protected node next;

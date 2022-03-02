@@ -9,12 +9,16 @@ public class Catering extends Item {
     Catering() {
         this.servings = 0;
         this.discount = 0;
+        this.selectedServings = 0;
+        this.finalPrice = 0;
     }
 
     Catering(String name, float price, int servings, float discount) {
         super(name, price);
         this.servings = servings;
         this.discount = discount;
+        this.selectedServings = 0;
+        this.finalPrice = price;
     }
 
     public void setServings(int servings) {
@@ -31,7 +35,35 @@ public class Catering extends Item {
         if (discount != 0) System.out.println("\tBulk Ordering Discount: " + "%.2f" + discount);
     }
 
+    public void displayCart() {
+        System.out.print(this.name + " (serves " + (this.servings * this.selectedServings) + ")");
+        System.out.printf(" - $" + "%.2f", this.finalPrice);
+        System.out.printf(" ($" + "$.2f", (this.selectedServings * this.discount) + " total discount)");
+        System.out.println();
+    }
+
+    public void setSelectedServints(int servings) {
+        this.selectedServings = servings;
+        float finalDiscount = servings * discount;
+        this.finalPrice -= finalDiscount;
+    }
+
+    public void copyItem(Catering item) {
+        this.name = item.name;
+        this.price = item.price;
+        this.servings = item.servings;
+        this.discount = item.discount;
+        this.selectedServings = 0;
+        this.finalPrice = this.price;
+    }
+
+    public float getPrice() {
+        return finalPrice;
+    }
+
     //data members
     protected int servings;
     protected float discount;
+    protected int selectedServings;
+    protected float finalPrice;
 }

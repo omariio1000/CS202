@@ -7,6 +7,7 @@
 public class Main  {
 
 	private Main() {
+		Item copying = null;
 		Spice tikka = new Spice("Tikka", (float) 12.50, 5);
 		Customizable pizza = new Customizable("pizza", (float) 11.50);
 		pizza.addFreeTopping("Cheese");
@@ -18,6 +19,25 @@ public class Main  {
 		bollywood.insertItem(tikka);
 		bollywood.insertItem(pizza);
 		bollywood.display();
+
+		Cart orderer = new Cart("Omar");
+		
+		copying = pizza;
+		Item newItem = null;
+		if (copying != null) {
+			if (copying instanceof Customizable) newItem = new Customizable();
+			else if (copying instanceof Spice) newItem = new Spice();
+			else if (copying instanceof Catering) newItem = new Catering();
+			
+			if (newItem != null) newItem.copy(copying);
+		}
+
+		((Customizable) newItem).chooseTopping("chicken");
+		((Customizable) newItem).chooseTopping("Olives");
+
+		orderer.insertItem(newItem);
+		orderer.display();
+       
 
 	}
 	
