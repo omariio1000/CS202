@@ -31,8 +31,11 @@ public class Catering extends Item {
 
     public void display() {
         super.display();
-        System.out.println("\tServes " + servings + "People.");
-        if (discount != 0) System.out.println("\tBulk Ordering Discount: " + "%.2f" + discount);
+        System.out.println("\tServes " + servings + " People.");
+        if (discount != 0) {
+            System.out.printf("\tBulk Ordering Discount: $" + "%.2f", discount);
+            System.out.println("\n");
+        }
     }
 
     public void displayCart() {

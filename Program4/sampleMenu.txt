@@ -1,0 +1,4 @@
+Bollywood Eats|Indian|1234 NW Broadway Blvd.|Mon-Fri 8AM-10PM, Sat-Sun 10AM-8PM|2|4
+Customizable|Pizza|11.50|Cheese,Olives,Peppers,Pineapples|Chicken-1.00,Steak-1.99
+Spice|Chicken Tikka|9.99|5
+Catering|Butter Chicken|99.99|8|10.00
