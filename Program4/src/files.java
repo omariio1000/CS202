@@ -17,7 +17,6 @@ public class files {
             /*for (int i = 0; i < restuarant.length; i++) {
                 System.out.println(restuarant[i]);
             }*/
-            System.out.println(restuarant[4]);
             newMenu = new Menu(restuarant[0], restuarant[1], restuarant[2], restuarant[3], Integer.parseInt(restuarant[4]), Integer.parseInt(restuarant[5]));
             while ((line = fileReader.readLine()) != null) {
                 String[] parsed = line.split("\\|");
@@ -44,14 +43,13 @@ public class files {
                     newMenu.insertItem(newCater);
                 }
                 else {
-                    System.out.println(parsed[0]);
                     System.out.println("Incompatible File.");
                     return null;
                 }
             }
+            fileReader.close();
         }
         catch (IOException e) {
-            System.out.println("No file found with that name.");
             return null;
         }    
         return newMenu;  
