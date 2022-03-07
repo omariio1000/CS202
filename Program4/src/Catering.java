@@ -49,6 +49,7 @@ public class Catering extends Item {
     public void setSelectedServings(int servings) {
         this.selectedServings = servings;
         float finalDiscount = servings * this.discount;
+        this.finalPrice = servings * this.price;
         this.finalPrice -= finalDiscount;
     }
 
