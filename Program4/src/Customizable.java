@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 
 public class Customizable extends Item {
-    Customizable() {
+    Customizable() {//default constructor
         super();
         freeToppings = new ArrayList<String>();
         extraToppings = new HashMap<String, Float>();
@@ -17,7 +17,7 @@ public class Customizable extends Item {
         finalPrice = 0;
     }
 
-    Customizable(String name, float price) {
+    Customizable(String name, float price) {//constructor w args
         super(name, price);
         freeToppings = new ArrayList<String>();
         extraToppings = new HashMap<String, Float>();
@@ -25,6 +25,7 @@ public class Customizable extends Item {
         finalPrice = price;
     }
 
+    //constructor w args and arraylist and map (not used)
     Customizable(String name, float price, ArrayList<String> freeToppings, HashMap<String, Float> extraToppings) {
         super(name, price);
         this.freeToppings = freeToppings;
@@ -40,7 +41,7 @@ public class Customizable extends Item {
         this.extraToppings.put(topping, price);
     }
 
-    public void display() {
+    public void display() {//menu display
         super.display();
         System.out.print("\tFree Toppings: ");
         for (int i = 0; i < this.freeToppings.size(); i++) {
@@ -55,7 +56,7 @@ public class Customizable extends Item {
         } 
     }
 
-    public void displayCart() {
+    public void displayCart() {//cart display
         System.out.print("\n" + this.name);
         if (!this.selectedToppings.isEmpty()) {
             System.out.print(" with ");
@@ -68,7 +69,7 @@ public class Customizable extends Item {
         System.out.println();
     }
 
-    public void chooseTopping(String name) {
+    public void chooseTopping(String name) {//selecting a topping
         if (name.equals("")) return;
         for (String topping : this.freeToppings) {
             if (topping.equals(name)) {
@@ -88,7 +89,7 @@ public class Customizable extends Item {
         System.out.println("No topping found with that name!");
     }
 
-    public void copyItem(Customizable item) {
+    public void copyItem(Customizable item) {//copy function
         this.name = item.name;
         this.price = item.price;
         this.freeToppings = item.freeToppings;

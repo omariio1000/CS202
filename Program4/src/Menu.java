@@ -12,7 +12,7 @@ import java.awt.GridLayout;*/
  */
 
 public class Menu {
-	public Menu() {
+	public Menu() {//default constructor
 		this.name = null;
 		this.cuisine = null;
 		this.address = null;
@@ -21,6 +21,7 @@ public class Menu {
 		this.rating = 0;
 	}
 
+	//constructor w args
 	public Menu(String name, String cuisine, String address, String hours, int priceRange, int rating) {
 		this.name = name;
 		this.cuisine = cuisine;
@@ -30,7 +31,7 @@ public class Menu {
 		this.rating = rating;
 	}
 
-	public void display() {
+	public void display() {//displaying menu
 		System.out.println(this.name + " (" + this.cuisine + " Food)");
 		System.out.println(this.address);
 		System.out.println("Hours: " + this.hours);
@@ -43,7 +44,7 @@ public class Menu {
 		if (this.itemList != null) displayItems(this.itemList);
 	}
 
-	public void displayItems(node displaying) {
+	public void displayItems(node displaying) {//displaying menu items
 		if (displaying == null) return;
 		displaying.display();
 		displayItems(displaying.getNext());
@@ -82,12 +83,12 @@ public class Menu {
 		this.rating = rating;
 	}
 
-	public void insertItem(Item inserting) {
+	public void insertItem(Item inserting) {//inserting item wrapper
 		if (inserting == null) return;
 		this.itemList = insertItem(this.itemList, inserting);
 	}
 
-	private node insertItem(node head, Item inserting) {
+	private node insertItem(node head, Item inserting) {//inserting item recursive
 		if (head == null) {
 			head = new node(inserting);
 			return head;
@@ -96,14 +97,14 @@ public class Menu {
 		return head;
 	}
 
-	public Item retrieveItem(String name) {
+	public Item retrieveItem(String name) {//retrieving item wrapper
 		if (this.itemList == null) return null;
 		node ret = retrieveItem(this.itemList, name);
 		if (ret == null) return null;
 		return ret.getItem();
 	}
 
-	public node retrieveItem(node head, String name) {
+	private node retrieveItem(node head, String name) {//retrieving item recursive
 		if (head == null) return head;
 		if (head.getItem().compareName(name)) return head;
 		return retrieveItem(head.getNext(), name);

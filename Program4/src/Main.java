@@ -15,7 +15,7 @@ public class Main  {
 
 		boolean inputting = true;
 		System.out.println("Welcome!");
-		while (inputting) {
+		while (inputting) {//adding menus to the arraylist
 			System.out.println("Please enter the name of your menu file.");
 			String menuName = input.nextLine();
 			files fileReader = new files();
@@ -27,7 +27,8 @@ public class Main  {
 			String yesno = input.nextLine();
 			if (!yesno.equals("y") && !yesno.equals("Y")) inputting = false;
 		}   
-		for (Menu m : menus) {
+
+		for (Menu m : menus) {//displaying all menus
 			m.display();
 		}
 
@@ -35,17 +36,19 @@ public class Main  {
 		String orderName = input.nextLine();
 		Cart orderer = new Cart(orderName);
 		boolean running = true;
-		while (running) {
-			System.out.println("What would you like to do?");
+
+		while (running) {//running main program
+			System.out.println("\nWhat would you like to do?");
 			System.out.println("1: Add item to cart");
 			System.out.println("2: Remove item from cart");
 			System.out.println("3: Display your cart");
 			System.out.println("4: Display a menu");
 			System.out.println("5: Checkout");
+			
 			int option = Integer.parseInt(input.nextLine());
-			if (option == 1) {
+			if (option == 1) {//adding item to cart
 				boolean ordering = true;
-				while (ordering) {
+				while (ordering) {//selecting item
 					System.out.println("Which menu would you like to order from?");
 					Menu selected = null;
 					String selectedName = input.nextLine();
@@ -60,7 +63,7 @@ public class Main  {
 						String yesno = input.nextLine();
 						if (yesno.equals("y") || yesno.equals("Y")) selected.display();
 						boolean selectingItems = true;
-						while (selectingItems) {
+						while (selectingItems) {//adding items from this menu
 							System.out.println("What item would you like to order?");
 							String itemName = input.nextLine();
 							Item orderItem = selected.retrieveItem(itemName);
@@ -79,7 +82,7 @@ public class Main  {
 									itemCopy = new Catering();
 									type = 3;
 								}
-								else {
+								else {//class is of different type
 									System.out.println("Unknown Error Occured.");
 									break;
 								}
@@ -117,7 +120,7 @@ public class Main  {
 									((Catering) itemCopy).setSelectedServings(servings);
 									orderer.insertItem(itemCopy);
 								}
-								else {
+								else {//of other class type
 									System.out.println("Unknown Error Occured.");
 									break;
 								}
@@ -136,13 +139,13 @@ public class Main  {
 					if (!yesno.equals("y") && !yesno.equals("Y")) ordering = false;
 				}
 			}
-			else if (option == 2) {
+			else if (option == 2) {//removing item from cart
 				System.out.println("What item would you like to remove?");
 				String removing = input.nextLine();
-				orderer.removeItem(removing);
+				orderer.removeItem(removing, input);
 			}
-			else if (option == 3) orderer.display();
-			else if (option == 4) {
+			else if (option == 3) orderer.display(); //displaying cart
+			else if (option == 4) {//displaying a mnu
 				System.out.println("What menu would you like to display?");
 				String menuName = input.nextLine();
 				Menu selected = null;
@@ -155,12 +158,16 @@ public class Main  {
 				if (selected != null) selected.display();
 				else System.out.println("No menu found with that name.");
 			}
-			else if (option == 5) running = false;
+			else if (option == 5) {//checking out (quit)
+				orderer.display();
+				System.out.println("Thanks for your order!");
+				running = false;
+			}
 			else System.out.println("Invalid Input.");
-	}
+		}
 		input.close();
 	}
-	
+
 	public static void main(String[] args) {
 		new Main();
 	}

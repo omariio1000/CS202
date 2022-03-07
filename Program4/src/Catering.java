@@ -6,14 +6,14 @@
 
 public class Catering extends Item {
     
-    Catering() {
+    Catering() {//default constructor
         this.servings = 0;
         this.discount = 0;
         this.selectedServings = 0;
         this.finalPrice = 0;
     }
 
-    Catering(String name, float price, int servings, float discount) {
+    Catering(String name, float price, int servings, float discount) {//constructor with args
         super(name, price);
         this.servings = servings;
         this.discount = discount;
@@ -29,7 +29,7 @@ public class Catering extends Item {
         this.discount = discount;
     }
 
-    public void display() {
+    public void display() {//display for menu
         super.display();
         System.out.println("\tServes " + servings + " People.");
         if (discount != 0) {
@@ -38,7 +38,7 @@ public class Catering extends Item {
         }
     }
 
-    public void displayCart() {
+    public void displayCart() {//display for cart
         System.out.print(this.name + " (serves " + (this.servings * this.selectedServings) + ")");
         System.out.printf(" - $" + "%.2f", this.finalPrice);
         float totalDiscount = this.selectedServings * this.discount;
@@ -52,7 +52,7 @@ public class Catering extends Item {
         this.finalPrice -= finalDiscount;
     }
 
-    public void copyItem(Catering item) {
+    public void copyItem(Catering item) {//copy function
         this.name = item.name;
         this.price = item.price;
         this.servings = item.servings;

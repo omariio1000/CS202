@@ -5,12 +5,12 @@
  */
 
 abstract class Item {
-    Item() {
+    Item() {//default constructor
         this.name = null;
         this.price = 0;
     }
 
-    Item(String name, float price) {
+    Item(String name, float price) {//constructor w args
         this.name = name;
         this.price = price;
     }
@@ -24,14 +24,14 @@ abstract class Item {
         return false;
     }
 
-    public void display() {
+    public void display() {//menu display
         System.out.printf("\n" + this.name + " - $" + "%.2f", price);
         System.out.println();
     }
 
-    abstract void displayCart();
+    abstract void displayCart(); //abstract cart display
 
-    public void copy(Item copying) {
+    public void copy(Item copying) {//copy func to call derived copy
         if (copying instanceof Customizable) ((Customizable) this).copyItem(((Customizable) copying));
         else if (copying instanceof Spice) ((Spice) this).copyItem(((Spice) copying));
         else if (copying instanceof Catering) ((Catering) this).copyItem(((Catering) copying));
