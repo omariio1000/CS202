@@ -41,13 +41,14 @@ public class Catering extends Item {
     public void displayCart() {
         System.out.print(this.name + " (serves " + (this.servings * this.selectedServings) + ")");
         System.out.printf(" - $" + "%.2f", this.finalPrice);
-        System.out.printf(" ($" + "$.2f", (this.selectedServings * this.discount) + " total discount)");
-        System.out.println();
+        float totalDiscount = this.selectedServings * this.discount;
+        System.out.printf(" ($" + "%.2f", totalDiscount);
+        System.out.println(" total discount)");
     }
 
-    public void setSelectedServints(int servings) {
+    public void setSelectedServings(int servings) {
         this.selectedServings = servings;
-        float finalDiscount = servings * discount;
+        float finalDiscount = servings * this.discount;
         this.finalPrice -= finalDiscount;
     }
 

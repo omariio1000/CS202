@@ -109,6 +109,10 @@ public class Menu {
 		return retrieveItem(head.getNext(), name);
 	}
 
+	public boolean compare(String name) {
+		if (this.name.equals(name)) return true;
+		return false;
+	}
 
 	//data members
 	protected String name;

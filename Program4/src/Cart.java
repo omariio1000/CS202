@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Cart {
     public Cart() {
         name = null;
@@ -28,17 +30,28 @@ public class Cart {
 
     public void removeItem(String removing) {
         if (this.cartHead == null) return;
-        this.cartHead = removeItem(this.cartHead, removing);
+        this.cartHead = removeItem(this.cartHead, removing, false);
     }
 
-    private node removeItem(node head, String name) {
-        if (head == null) return head;
-        else if (head.getItem().compareName(name)) {
-            this.totalPrice -= head.getItem().getPrice();
-            if (head.getNext() != null) head = head.getNext();
-            else head = null;
+    private node removeItem(node head, String name, boolean found) {
+        if (head == null) {
+            if (!found) System.out.println("No item found with that name!");
+            return head;
         }
-        else head.setNext(removeItem(head.getNext(), name));
+        else if (head.getItem().compareName(name)) {
+            found = true;
+            head.displayCart();
+            System.out.println("Are you sure you would like to remove this item? (y/n)");
+            Scanner in = new Scanner(System.in);
+            String yn = in.nextLine();
+            if (yn.equals("y") || yn.equals("Y")) {
+                this.totalPrice -= head.getItem().getPrice();
+                if (head.getNext() != null) head = head.getNext();
+                else head = null;
+                System.out.println("Item removed.");
+            }
+        }
+        else head.setNext(removeItem(head.getNext(), name, found));
         return head;
     }
 
