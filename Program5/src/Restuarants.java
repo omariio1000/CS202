@@ -1,5 +1,89 @@
 public class Restuarants {
     
+    public Restuarants() {
+        root = null;
+    }
+
+    public void insertMenu(Menu data) {
+        if (data == null) return;
+        this.root = insertMenu(this.root, new menuNode(data));
+    }
+
+    public menuNode insertMenu(menuNode root, menuNode inserting) {
+        if (root == null) {
+            root = inserting;
+            return root;
+        }
+        
+        int comp = root.compareTree(inserting);
+        if (comp == 1 || comp == 0) root.setRight(insertMenu(root.getRight(), inserting));
+        else root.setLeft(insertMenu(root.getLeft(), inserting));
+        return root;
+    }
+
+    public menuNode retrieve(String cuisine) {
+        if (cuisine == null) return null;
+        return retrieve(this.root, cuisine);
+    }
+
+    public menuNode retrieve(menuNode root, String cuisine) {
+        if (root == null) return null;
+        int comp = root.compareTree(cuisine);
+        if (comp == 0) return root;
+        else if (comp == 1) retrieve(root.getRight(), cuisine);
+        else retrieve(root.getLeft(), cuisine);
+        return root;
+    }
+
+    public void display () {
+        if (this.root == null) return;
+        display(this.root);
+    }
+
+    public void display(menuNode root) {
+        if (root == null) return;
+        display(root.getLeft());
+        root.display();
+        display(root.getRight());
+    }
+
+    public void delete(String cuisine) {
+        if (cuisine == null) return;
+        menuNode deleting = retrieve(cuisine);
+        if (deleting == null) return;
+        delete(deleting);
+    }
+
+    public void delete(menuNode deleting) {
+        menuNode left = deleting.getLeft();
+        menuNode right = deleting.getRight();
+        if (left == null && right == null) deleting = null;
+        else if (right == null) deleting = left;
+        else if (left == null) deleting = right;
+        else {
+            menuNode temp = inOrderSuccessor(deleting);
+            temp.setRight(deleting.getRight());
+            temp.setLeft(deleting.getLeft());
+            deleting = temp;
+        }
+    }
+
+    public menuNode inOrderSuccessor(menuNode root) {
+        menuNode left = root.getLeft();
+        menuNode right = root.getRight();
+        if (left == null) {
+            menuNode temp = root;
+
+            if (right != null) root = right;
+            else root = null;
+
+            temp.setRight(null);
+            return temp;
+        }
+        return inOrderSuccessor(root.getLeft());
+    }
+
+    protected menuNode root;
 }
 
 class menuNode {
@@ -31,12 +115,20 @@ class menuNode {
         this.right = right;
     }
 
-    public int compare(menuNode comp) {
-        return this.data.compare(comp.data);
+    public int compareTree(menuNode comp) {
+        return this.data.compareTree(comp.data);
     }
 
-    public boolean compare(String name) {
+    public int compareTree(String cuisine) {
+        return this.data.compareTree(cuisine);
+    }
+
+    public boolean compareName(String name) {
         return this.data.compare(name);
+    }
+
+    public void display() {
+        this.data.display();
     }
 
     protected Menu data;

@@ -115,8 +115,15 @@ public class Menu {
 		return false;
 	}
 
-	public int compare(Menu comp) {
-		int result = (this.name.compareTo(comp.name));
+	public int compareTree(Menu comp) {
+		int result = (this.cuisine.compareTo(comp.cuisine));
+		if (result == 0) return 0;
+		else if (result > 0) return 1;
+		else return -1;
+	}
+
+	public int compareTree(String cuisine) {
+		int result = (this.cuisine.compareTo(cuisine));
 		if (result == 0) return 0;
 		else if (result > 0) return 1;
 		else return -1;
