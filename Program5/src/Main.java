@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /* Omar Nassar
@@ -11,7 +10,7 @@ public class Main  {
 
 	private Main() {
 		Scanner input = new Scanner(System.in);
-		ArrayList<Menu> menus = new ArrayList<Menu>();
+		Restuarants restuarants = new Restuarants();
 
 		boolean inputting = true;
 		System.out.println("Welcome!");
@@ -20,7 +19,7 @@ public class Main  {
 			String menuName = input.nextLine();
 			files fileReader = new files();
 			Menu newMenu = fileReader.readFile(menuName);
-			if (newMenu != null) menus.add(newMenu);
+			if (newMenu != null) restuarants.insertMenu(newMenu);
 			else System.out.println("No File Found!");
 
 			System.out.println("Would you like to add another menu? (y/n)");
@@ -28,9 +27,7 @@ public class Main  {
 			if (!yesno.equals("y") && !yesno.equals("Y")) inputting = false;
 		}   
 
-		for (Menu m : menus) {//displaying all menus
-			m.display();
-		}
+		restuarants.display();
 
 		System.out.println("What is your name?");
 		String orderName = input.nextLine();
@@ -40,24 +37,20 @@ public class Main  {
 		while (running) {//running main program
 			System.out.println("\nWhat would you like to do?");
 			System.out.println("1: Add item to cart");
-			System.out.println("2: Remove item from cart");
-			System.out.println("3: Display your cart");
-			System.out.println("4: Display a menu");
-			System.out.println("5: Checkout");
+			System.out.println("2: Find a restuarant by cuisine");
+			System.out.println("3: Remove item from cart");
+			System.out.println("4: Display your cart");
+			System.out.println("5: Display a menu");
+			System.out.println("6: Display all menus");
+			System.out.println("7: Checkout");
 			
 			int option = Integer.parseInt(input.nextLine());
 			if (option == 1) {//adding item to cart
 				boolean ordering = true;
 				while (ordering) {//selecting item
 					System.out.println("Which menu would you like to order from?");
-					Menu selected = null;
 					String selectedName = input.nextLine();
-					for (Menu m : menus) {
-						if (m.compare(selectedName)) {
-							selected = m;
-							break;
-						}
-					}
+					Menu selected = restuarants.retrieveName(selectedName);
 					if (selected != null) {
 						System.out.println("Would you like to view the menu? (y/n)");
 						String yesno = input.nextLine();
@@ -139,26 +132,32 @@ public class Main  {
 					if (!yesno.equals("y") && !yesno.equals("Y")) ordering = false;
 				}
 			}
-			else if (option == 2) {//removing item from cart
+			else if (option == 2) {//find menu by cuisine
+				System.out.println("What type of cuisine would you like to try?");
+				String cuisine = input.nextLine();
+				menuNode found = restuarants.retrieve(cuisine);
+				if (found != null) {
+					Menu selected = found.getData();
+					System.out.println("You may like this restuarant!");
+					selected.display();
+				}
+				else System.out.println("No cuisine found with that name.");
+			}
+			else if (option == 3) {//removing item from cart
 				System.out.println("What item would you like to remove?");
 				String removing = input.nextLine();
 				orderer.removeItem(removing, input);
 			}
-			else if (option == 3) orderer.display(); //displaying cart
-			else if (option == 4) {//displaying a mnu
+			else if (option == 4) orderer.display(); //displaying cart
+			else if (option == 5) {//displaying a mnu
 				System.out.println("What menu would you like to display?");
 				String menuName = input.nextLine();
-				Menu selected = null;
-				for (Menu m : menus) {
-					if (m.compare(menuName)) {
-						selected = m;
-						break;
-					}
-				}
+				Menu selected = restuarants.retrieveName(menuName);
 				if (selected != null) selected.display();
 				else System.out.println("No menu found with that name.");
 			}
-			else if (option == 5) {//checking out (quit)
+			else if (option == 6) restuarants.display();
+			else if (option == 7) {//checking out (quit)
 				orderer.display();
 				System.out.println("Thanks for your order!");
 				running = false;

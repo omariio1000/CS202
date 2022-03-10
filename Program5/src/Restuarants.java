@@ -35,6 +35,21 @@ public class Restuarants {
         return root;
     }
 
+    public Menu retrieveName(String name) {
+        if (name == null) return null;
+        return retrieveName(this.root, name);
+    }
+
+    private Menu retrieveName(menuNode root, String name) {
+        if (root == null) return null;
+        if (root.getData().compare(name)) return root.getData();
+        Menu left = retrieveName(root.getLeft(), name);
+        Menu right = retrieveName(root.getRight(), name);
+        if (left != null) return left;
+        else if (right != null) return right;
+        return null;
+    }
+
     public void display () {
         if (this.root == null) return;
         display(this.root);
@@ -61,7 +76,7 @@ public class Restuarants {
         else if (right == null) deleting = left;
         else if (left == null) deleting = right;
         else {
-            menuNode temp = inOrderSuccessor(deleting);
+            menuNode temp = inOrderSuccessor(deleting.getRight());
             temp.setRight(deleting.getRight());
             temp.setLeft(deleting.getLeft());
             deleting = temp;
@@ -97,6 +112,10 @@ class menuNode {
         this.data = data;
         this.left = null;
         this.right = null;
+    }
+
+    public Menu getData() {
+        return this.data;
     }
 
     public menuNode getLeft() {
