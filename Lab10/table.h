@@ -29,6 +29,7 @@ class table
 	  int count_right_subtree();		//STEP 2
 	  int remove_largest();	//STEP 3
       int sum();            //STEP 4
+      int easierSum();
 	  int copy(table & to_copy);  //STEP 5
 
 	  //Challenge
@@ -47,6 +48,7 @@ class table
 	  int count_right_subtree(node * root);
 	  int remove_largest(node * & root);
 	  int sum(node * root);
+      int easierSum(node * root, int & count);
 	  int copy(node * & destination, node * source);
 
 	  //Challenge
