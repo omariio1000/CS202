@@ -44,7 +44,7 @@ public class Menu {
 		if (this.itemList != null) displayItems(this.itemList);
 	}
 
-	public void displayItems(node displaying) {//displaying menu items
+	private static void displayItems(node displaying) {//displaying menu items
 		if (displaying == null) return;
 		displaying.display();
 		displayItems(displaying.getNext());
@@ -88,7 +88,7 @@ public class Menu {
 		this.itemList = insertItem(this.itemList, inserting);
 	}
 
-	private node insertItem(node head, Item inserting) {//inserting item recursive
+	private static node insertItem(node head, Item inserting) {//inserting item recursive
 		if (head == null) {
 			head = new node(inserting);
 			return head;
@@ -104,7 +104,7 @@ public class Menu {
 		return ret.getItem();
 	}
 
-	private node retrieveItem(node head, String name) {//retrieving item recursive
+	private static node retrieveItem(node head, String name) {//retrieving item recursive
 		if (head == null) return head;
 		if (head.getItem().compareName(name)) return head;
 		return retrieveItem(head.getNext(), name);

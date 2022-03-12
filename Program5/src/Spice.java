@@ -24,7 +24,7 @@ public class Spice extends Item {
 
     public void display() {//display for menu
         super.display();
-        System.out.println("\tSpice Level: 1-" + this.spice);
+        System.out.println("\tSpice Level: 0 - " + this.spice);
     }
 
     public void displayCart() {//display for cart

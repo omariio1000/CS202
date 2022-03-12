@@ -67,7 +67,7 @@ public class Cart {
         System.out.println();
     }
 
-    public void displayItems(node displaying) {//display items in cart
+    private static void displayItems(node displaying) {//display items in cart
 		if (displaying == null) return;
 		displaying.displayCart();
 		displayItems(displaying.getNext());

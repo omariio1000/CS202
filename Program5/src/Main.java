@@ -14,6 +14,19 @@ public class Main  {
 
 		boolean inputting = true;
 		System.out.println("Welcome!");
+		System.out.println("Would you like to use the sample menus? (y/n)");
+		String yn = input.nextLine();
+		if (yn.equals("y") || yn.equals("Y")) {
+			files fileReader = new files();
+			Menu m1 = fileReader.readFile("sampleMenu.txt");
+			Menu m2 = fileReader.readFile("sampleMenu2.txt");
+			Menu m3 = fileReader.readFile("sampleMenu3.txt");
+			restuarants.insertMenu(m1);
+			restuarants.insertMenu(m2);
+			restuarants.insertMenu(m3);
+			inputting = false;
+		}
+
 		while (inputting) {//adding menus to the arraylist
 			System.out.println("Please enter the name of your menu file.");
 			String menuName = input.nextLine();
@@ -55,75 +68,7 @@ public class Main  {
 						System.out.println("Would you like to view the menu? (y/n)");
 						String yesno = input.nextLine();
 						if (yesno.equals("y") || yesno.equals("Y")) selected.display();
-						boolean selectingItems = true;
-						while (selectingItems) {//adding items from this menu
-							System.out.println("What item would you like to order?");
-							String itemName = input.nextLine();
-							Item orderItem = selected.retrieveItem(itemName);
-							if (orderItem != null) {
-								Item itemCopy = null;
-								int type = 0;
-								if (orderItem instanceof Customizable) {
-									itemCopy = new Customizable();
-									type = 1;
-								}
-								else if (orderItem instanceof Spice) {
-									itemCopy = new Spice();
-									type = 2;
-								}
-								else if (orderItem instanceof Catering) {
-									itemCopy = new Catering();
-									type = 3;
-								}
-								else {//class is of different type
-									System.out.println("Unknown Error Occured.");
-									break;
-								}
-
-								itemCopy.copy(orderItem);
-
-								System.out.println("Would you like to view the item? (y/n)");
-								yesno = input.nextLine();
-								if (yesno.equals("y") || yesno.equals("Y")) itemCopy.display();
-
-								if (type == 1) {
-									System.out.println("Would you like any toppings? (y/n)");
-									yesno = input.nextLine();
-									boolean choosingToppings = false;
-									if (yesno.equals("y") || yesno.equals("Y")) choosingToppings = true;
-									while (choosingToppings) {
-										System.out.println("What topping would you like to add?");
-										String toppingName = input.nextLine();
-										((Customizable) itemCopy).chooseTopping(toppingName);
-										System.out.println("Would you like to add another topping? (y/n)");
-										yesno = input.nextLine();
-										if (!yesno.equals("y") && !yesno.equals("Y")) choosingToppings = false;
-									}
-									orderer.insertItem(itemCopy);
-								}
-								else if (type == 2) {
-									System.out.println("What spice level would you like to select?");
-									int spice = Integer.parseInt(input.nextLine());
-									((Spice) itemCopy).setSelectedSpice(spice);
-									orderer.insertItem(itemCopy);
-								}
-								else if (type == 3) {
-									System.out.println("How many servings would you like to order?");
-									int servings = Integer.parseInt(input.nextLine());
-									((Catering) itemCopy).setSelectedServings(servings);
-									orderer.insertItem(itemCopy);
-								}
-								else {//of other class type
-									System.out.println("Unknown Error Occured.");
-									break;
-								}
-							}
-							else System.out.println("There is no item with that name!");
-
-							System.out.println("Would you like to order another item from this menu? (y/n)");
-							yesno = input.nextLine();
-							if (!yesno.equals("y") && !yesno.equals("Y")) selectingItems = false;
-						}
+						orderItem(orderer, selected, input);
 					}
 					else System.out.println("No menu found with that name!");
 
@@ -140,6 +85,11 @@ public class Main  {
 					Menu selected = found.getData();
 					System.out.println("You may like this restuarant!");
 					selected.display();
+					System.out.println("Would you like to order an item from this menu? (y/n)");
+					String yesno = input.nextLine();
+					if (yesno.equals("y") || yesno.equals("Y")) {
+						orderItem(orderer, selected, input);
+					}
 				}
 				else System.out.println("No cuisine found with that name.");
 			}
@@ -149,11 +99,18 @@ public class Main  {
 				orderer.removeItem(removing, input);
 			}
 			else if (option == 4) orderer.display(); //displaying cart
-			else if (option == 5) {//displaying a mnu
+			else if (option == 5) {//displaying a menu
 				System.out.println("What menu would you like to display?");
 				String menuName = input.nextLine();
 				Menu selected = restuarants.retrieveName(menuName);
-				if (selected != null) selected.display();
+				if (selected != null) {
+					selected.display();
+					System.out.println("Would you like to order an item from this menu? (y/n)");
+					String yesno = input.nextLine();
+					if (yesno.equals("y") || yesno.equals("Y")) {
+						orderItem(orderer, selected, input);
+					}
+				}
 				else System.out.println("No menu found with that name.");
 			}
 			else if (option == 6) restuarants.display();
@@ -169,6 +126,80 @@ public class Main  {
 
 	public static void main(String[] args) {
 		new Main();
+	}
+
+	//moved ordering items to a function so I could order from multiple places
+	public static void orderItem(Cart orderer, Menu selected, Scanner input) {
+		boolean selectingItems = true;
+		String yesno;
+		while (selectingItems) {//adding items from this menu
+			System.out.println("What item would you like to order?");
+			String itemName = input.nextLine();
+			Item orderItem = selected.retrieveItem(itemName);
+			if (orderItem != null) {
+				Item itemCopy = null;
+				int type = 0;
+				if (orderItem instanceof Customizable) {
+					itemCopy = new Customizable();
+					type = 1;
+				}
+				else if (orderItem instanceof Spice) {
+					itemCopy = new Spice();
+					type = 2;
+				}
+				else if (orderItem instanceof Catering) {
+					itemCopy = new Catering();
+					type = 3;
+				}
+				else {//class is of different type
+					System.out.println("Unknown Error Occured.");
+					break;
+				}
+
+				itemCopy.copy(orderItem);
+
+				System.out.println("Would you like to view the item? (y/n)");
+				yesno = input.nextLine();
+				if (yesno.equals("y") || yesno.equals("Y")) itemCopy.display();
+
+				if (type == 1) {
+					System.out.println("Would you like any toppings? (y/n)");
+					yesno = input.nextLine();
+					boolean choosingToppings = false;
+					if (yesno.equals("y") || yesno.equals("Y")) choosingToppings = true;
+					while (choosingToppings) {
+						System.out.println("What topping would you like to add?");
+						String toppingName = input.nextLine();
+						((Customizable) itemCopy).chooseTopping(toppingName);
+						System.out.println("Would you like to add another topping? (y/n)");
+						yesno = input.nextLine();
+						if (!yesno.equals("y") && !yesno.equals("Y")) choosingToppings = false;
+					}
+					orderer.insertItem(itemCopy);
+				}
+				else if (type == 2) {
+					System.out.println("What spice level would you like to select?");
+					int spice = Integer.parseInt(input.nextLine());
+					((Spice) itemCopy).setSelectedSpice(spice);
+					orderer.insertItem(itemCopy);
+				}
+				else if (type == 3) {
+					System.out.println("How many servings would you like to order?");
+					int servings = Integer.parseInt(input.nextLine());
+					((Catering) itemCopy).setSelectedServings(servings);
+					orderer.insertItem(itemCopy);
+				}
+				else {//of other class type
+					System.out.println("Unknown Error Occured.");
+					break;
+				}
+			}
+			else System.out.println("There is no item with that name!");
+
+			System.out.println("Would you like to order another item from this menu? (y/n)");
+			yesno = input.nextLine();
+			if (!yesno.equals("y") && !yesno.equals("Y")) selectingItems = false;
+		}
 	}
 
 }

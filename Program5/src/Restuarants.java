@@ -1,15 +1,21 @@
+/* Omar Nassar
+ * Portland State University CS202
+ * March 9, 2022
+ * Binary Search tree to store menus
+ */
+
 public class Restuarants {
     
-    public Restuarants() {
+    public Restuarants() {//default constructor
         root = null;
     }
 
-    public void insertMenu(Menu data) {
+    public void insertMenu(Menu data) {//wrapper function for inserting
         if (data == null) return;
         this.root = insertMenu(this.root, new menuNode(data));
     }
 
-    public menuNode insertMenu(menuNode root, menuNode inserting) {
+    private static menuNode insertMenu(menuNode root, menuNode inserting) {//recursive insert
         if (root == null) {
             root = inserting;
             return root;
@@ -21,26 +27,26 @@ public class Restuarants {
         return root;
     }
 
-    public menuNode retrieve(String cuisine) {
+    public menuNode retrieve(String cuisine) {//wrapper for retrieval
         if (cuisine == null) return null;
         return retrieve(this.root, cuisine);
     }
 
-    public menuNode retrieve(menuNode root, String cuisine) {
+    private static menuNode retrieve(menuNode root, String cuisine) {//recursive retrieve
         if (root == null) return null;
         int comp = root.compareTree(cuisine);
         if (comp == 0) return root;
-        else if (comp == 1) retrieve(root.getRight(), cuisine);
-        else retrieve(root.getLeft(), cuisine);
+        else if (comp == 1) root = retrieve(root.getRight(), cuisine);
+        else root = retrieve(root.getLeft(), cuisine);
         return root;
     }
 
-    public Menu retrieveName(String name) {
+    public Menu retrieveName(String name) {//wrapper for retrieve by name
         if (name == null) return null;
         return retrieveName(this.root, name);
     }
 
-    private Menu retrieveName(menuNode root, String name) {
+    private static Menu retrieveName(menuNode root, String name) {//recursive retrieve by name
         if (root == null) return null;
         if (root.getData().compare(name)) return root.getData();
         Menu left = retrieveName(root.getLeft(), name);
@@ -50,26 +56,28 @@ public class Restuarants {
         return null;
     }
 
-    public void display () {
+    public void display () {//wrapper for display
         if (this.root == null) return;
         display(this.root);
     }
 
-    public void display(menuNode root) {
+    private static void display(menuNode root) {//recursive display
         if (root == null) return;
         display(root.getLeft());
+        System.out.println();
         root.display();
         display(root.getRight());
     }
 
-    public void delete(String cuisine) {
+
+    public void delete(String cuisine) {//wrapper for deleting
         if (cuisine == null) return;
         menuNode deleting = retrieve(cuisine);
         if (deleting == null) return;
         delete(deleting);
     }
 
-    public void delete(menuNode deleting) {
+    private void delete(menuNode deleting) {//recursive delete
         menuNode left = deleting.getLeft();
         menuNode right = deleting.getRight();
         if (left == null && right == null) deleting = null;
@@ -83,7 +91,7 @@ public class Restuarants {
         }
     }
 
-    public menuNode inOrderSuccessor(menuNode root) {
+    private menuNode inOrderSuccessor(menuNode root) {
         menuNode left = root.getLeft();
         menuNode right = root.getRight();
         if (left == null) {
@@ -101,14 +109,14 @@ public class Restuarants {
     protected menuNode root;
 }
 
-class menuNode {
-    public menuNode() {
+class menuNode {//node class for BST
+    public menuNode() {//default constructor
         this.data = null;
         this.left = null;
         this.right = null;
     }
 
-    public menuNode(Menu data) {
+    public menuNode(Menu data) {//constructor with args
         this.data = data;
         this.left = null;
         this.right = null;
@@ -134,19 +142,19 @@ class menuNode {
         this.right = right;
     }
 
-    public int compareTree(menuNode comp) {
+    public int compareTree(menuNode comp) {//comparing to another node
         return this.data.compareTree(comp.data);
     }
 
-    public int compareTree(String cuisine) {
+    public int compareTree(String cuisine) {//comparing node data with string cuisine
         return this.data.compareTree(cuisine);
     }
 
-    public boolean compareName(String name) {
+    public boolean compareName(String name) {//comparing node data with string name
         return this.data.compare(name);
     }
 
-    public void display() {
+    public void display() {//displaying
         this.data.display();
     }
 

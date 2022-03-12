@@ -1,0 +1,2 @@
+Burger Queen|American|0x0 NA NULL PTR|Open 24 Hours|1|1
+Customizable|Burger|3.00|Cheese,Pickles,Onions,Ketchup,Mayonnaise,Mustard,Lettuce|Mushrooms-0.50,Extra Patty-2.00,Chicken Patty-1.50,Avocadoes-1.00,Mac and Cheese-3.00
